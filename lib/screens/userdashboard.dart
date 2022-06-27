@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:web_qr_system/model/usermodel.dart';
 import 'package:web_qr_system/screens/login.dart';
+import 'package:web_qr_system/screens/qrgenerator.dart';
 
 class UserDashboard extends StatefulWidget {
   const UserDashboard({Key? key}) : super(key: key);
@@ -102,7 +103,12 @@ class _UserDashboardState extends State<UserDashboard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    ElevatedButton(onPressed: () {},
+                    ElevatedButton(onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => QRGenerate()));
+                    },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 30,
