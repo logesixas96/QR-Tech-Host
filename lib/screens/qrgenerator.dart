@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:web_qr_system/model/qrgenmodel.dart';
+import '../model/usermodel.dart';
 
 class QRGenerate extends StatefulWidget {
   const QRGenerate({Key? key}) : super(key: key);
@@ -13,6 +18,21 @@ class _QRGenerateState extends State<QRGenerate> {
   String qrData = "";
   final eventNameEditingController = new TextEditingController();
   final eventAddressEditingController = new TextEditingController();
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedInUser = UserModel();
+
+  @override
+  void initState(){
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      this.loggedInUser = UserModel.fromMap(value.data());
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +86,10 @@ class _QRGenerateState extends State<QRGenerate> {
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           setState(() {
-            qrData = eventNameEditingController.text+eventAddressEditingController.text;
+            qrData = loggedInUser.uid.toString()
+                +":"+eventNameEditingController.text
+                +":"+eventAddressEditingController.text;
+          postDetailsToFirestore();
           });
         },
         child: Text("Generate QR Code",
@@ -80,6 +103,7 @@ class _QRGenerateState extends State<QRGenerate> {
     return Scaffold(
       appBar: AppBar(
         title: Text('QR Code Generator'),
+        centerTitle: true,
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -88,9 +112,7 @@ class _QRGenerateState extends State<QRGenerate> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               QrImage(
-                  embeddedImage: NetworkImage(
-                    "https://avatars1.githubusercontent.com/u/41328571?s=280&v=4",
-                  ),
+                  version: QrVersions.auto,
                   data: qrData,
                   size: 200,
                   backgroundColor: Colors.white
@@ -106,7 +128,33 @@ class _QRGenerateState extends State<QRGenerate> {
         ),
       ),
     );
-
-
   }
+
+  postDetailsToFirestore() async {
+    //calling firestore
+    //calling user model
+    //sending the values
+
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
+    EventCreateModel eventCreateModel = EventCreateModel();
+
+    //writing all the values
+    eventCreateModel.eventName = eventNameEditingController.text;
+    eventCreateModel.eventAddress = eventAddressEditingController.text;
+    eventCreateModel.firstName = loggedInUser.firstName;
+    eventCreateModel.lastName = loggedInUser.lastName;
+
+
+    await firebaseFirestore
+        .collection("users")
+        .doc(user!.uid)
+        .collection("events")
+        .doc(eventNameEditingController.text)
+        .set(eventCreateModel.toMap());
+    Fluttertoast.showToast(
+        msg: "QR successfully generated!", timeInSecForIosWeb: 5);
+  }
+
+
 }

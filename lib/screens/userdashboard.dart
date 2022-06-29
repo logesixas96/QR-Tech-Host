@@ -33,8 +33,8 @@ class _UserDashboardState extends State<UserDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         title: Text("Welcome ${loggedInUser.firstName}"),
         centerTitle: true,
         actions: <Widget>[
@@ -49,101 +49,99 @@ class _UserDashboardState extends State<UserDashboard> {
                   size: 26,
                 )
             ),
-
-
           )
         ],
       ),
       body: Center(
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/bg.png"),
-              fit: BoxFit.fill,
+        child: SingleChildScrollView(
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/bg.png"),
+                fit: BoxFit.fill,
+              ),
             ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(36.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 230,
-                  child: Image.asset("assets/logo.png",fit: BoxFit.contain),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  "My Profile",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                Text("${loggedInUser.firstName} ${loggedInUser.lastName}",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width/10,
+                  vertical: MediaQuery.of(context).size.height/10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 230,
+                    child: Image.asset("assets/logo.png",fit: BoxFit.contain),
                   ),
-                ),
-                Text("${loggedInUser.email}",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20,
+                  SizedBox(height: 20),
+                  Text(
+                    "My Profile",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                ),
-                Text("${loggedInUser.phoneNum}",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20,
-                  ),
-                ),
-                SizedBox(height: 60),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    ElevatedButton(onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => QRGenerate()));
-                    },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 30),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                              Icons.qr_code_2,
-                              size: 70),
-                          Text('Generate New QR'),
-                        ],
-                      ),
+                  SizedBox(height: 20),
+                  Text("${loggedInUser.firstName} ${loggedInUser.lastName}",
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
                     ),
-                    SizedBox(width: 15),
-                    ElevatedButton(onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 30),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                              Icons.history,
-                              size: 70),
-                          Text('History'),
-                        ],
-                      ),
+                  ),
+                  Text("${loggedInUser.email}",
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  Text("${loggedInUser.phoneNum}",
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                    ),
+                  ),
+                  SizedBox(height: 40),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      ElevatedButton(onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => QRGenerate()));
+                      },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(40),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                                Icons.qr_code_2,
+                                size: 50),
+                            Text('Generate New QR'),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 15),
+                      ElevatedButton(onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(40),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                                Icons.history,
+                                size: 50),
+                            Text('View Attendance'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

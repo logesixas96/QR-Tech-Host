@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:web_qr_system/model/usermodel.dart';
 import 'package:web_qr_system/screens/userdashboard.dart';
+import 'package:intl/intl.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final confirmPasswordEditingController = new TextEditingController();
 
   final _auth = FirebaseAuth.instance;
+  String datetime = DateFormat("dd MMMM yyyy | hh:mm a").format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +231,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Navigator.of(context).pop();
           },
         ),
-        title: Text("Get started with your account."),
+        title: Text(datetime),
         centerTitle: true,
       ),
       body: Center(

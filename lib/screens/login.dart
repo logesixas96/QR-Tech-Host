@@ -14,10 +14,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
-
   final _auth = FirebaseAuth.instance;
 
   @override
@@ -109,9 +107,6 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            // padding: EdgeInsets.all(MediaQuery.of(context).size.height / 10),
-            //width: MediaQuery.of(context).size.width,
-            //height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/bg.png"),
