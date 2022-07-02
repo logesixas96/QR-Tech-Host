@@ -13,7 +13,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
   final _auth = FirebaseAuth.instance;
 
@@ -45,8 +45,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.mail),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          prefixIcon: const Icon(Icons.mail),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -60,12 +60,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       borderRadius: BorderRadius.circular(30),
       color: Colors.redAccent,
       child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           resetPass(emailController.text);
         },
-        child: Text("Reset Password",
+        child: const Text("Reset Password",
           textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
@@ -77,12 +77,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        title: Text("Forgot your password? Enter your email & a link will be sent to you for password reset."),
+        title: const Text("Forgot your password? Enter your email & a link will be sent to you for password reset."),
         centerTitle: true,
       ),
       body: Center(
@@ -90,7 +90,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           child: Container(
             //padding: EdgeInsets.all(MediaQuery.of(context).size.height / 10),
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/bg.png"),
                 fit: BoxFit.fill,
@@ -106,7 +106,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(height: 25),
+                    const SizedBox(height: 25),
                     SizedBox(
                       height: 300,
                       child: Image.asset(
@@ -114,17 +114,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         fit: BoxFit.contain,
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Container(
                         width: 500,
                         child: emailField
                     ),
-                    SizedBox(height: 35),
+                    const SizedBox(height: 35),
                     Container(
                         width: 500,
                         child: resetButton
                     ),
-                    SizedBox(height: 85),
+                    const SizedBox(height: 85),
                   ],
                 ),
               ),
