@@ -76,12 +76,19 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         title: const Text("Forgot your password? Enter your email & a link will be sent to you for password reset."),
         centerTitle: true,
       ),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
+            //padding: EdgeInsets.all(MediaQuery.of(context).size.height / 10),
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -108,12 +115,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    SizedBox(
+                    Container(
                         width: 500,
                         child: emailField
                     ),
                     const SizedBox(height: 35),
-                    SizedBox(
+                    Container(
                         width: 500,
                         child: resetButton
                     ),

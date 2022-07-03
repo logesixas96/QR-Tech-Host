@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.mail),
+          prefixIcon: const Icon(Icons.mail), //prefer const with constant constructor
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
       autofocus: false,
       controller: passwordController,
       obscureText: true,
-      validator: (value) {
+      validator: (value) { //no return value set. adding return null
         RegExp regex = RegExp(r'^.{6,}$');
         if (value!.isEmpty) {
           return ("Please enter a password!");
@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
         return null;
       },
       onSaved: (value) {
-        passwordController.text = value!;
+        emailController.text = value!;
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
@@ -102,8 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-            "Welcome to QR Host Panel. If you are not a host, please sign in through our Mobile App."
-        ),
+            "Welcome to QR Host Panel. If you are not a host, please sign in through our Mobile App."),
         centerTitle: true,
       ),
       body: Center(
@@ -134,9 +133,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    SizedBox(width: 500, child: emailField),
+                    Container(width: 500, child: emailField),
                     const SizedBox(height: 15),
-                    SizedBox(width: 500, child: passwordField),
+                    Container(width: 500, child: passwordField),
                     const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -160,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                     const SizedBox(height: 25),
-                    SizedBox(width: 500, child: loginButton),
+                    Container(width: 500, child: loginButton),
                     const SizedBox(height: 15),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
