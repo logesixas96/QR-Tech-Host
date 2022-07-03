@@ -14,10 +14,9 @@ class QRGenerate extends StatefulWidget {
 }
 
 class _QRGenerateState extends State<QRGenerate> {
-
   String qrData = "";
-  final eventNameEditingController = new TextEditingController();
-  final eventAddressEditingController = new TextEditingController();
+  final eventNameEditingController = TextEditingController();
+  final eventAddressEditingController = TextEditingController();
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
 
@@ -29,7 +28,7 @@ class _QRGenerateState extends State<QRGenerate> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
   }
@@ -48,8 +47,8 @@ class _QRGenerateState extends State<QRGenerate> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.event),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          prefixIcon: const Icon(Icons.event),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Event Name",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -68,8 +67,8 @@ class _QRGenerateState extends State<QRGenerate> {
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.location_pin),
-        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        prefixIcon: const Icon(Icons.location_pin),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         hintText: "Event Location",
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -82,17 +81,18 @@ class _QRGenerateState extends State<QRGenerate> {
       borderRadius: BorderRadius.circular(30),
       color: Colors.redAccent,
       child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           setState(() {
-            qrData = loggedInUser.uid.toString()
-                +":"+eventNameEditingController.text
-                +":"+eventAddressEditingController.text;
+//           qrData = loggedInUser.uid.toString()
+//              +":"+eventNameEditingController.text
+//              +":"+eventAddressEditingController.text; //using interpolation below instead
+             qrData = "${loggedInUser.uid}:${eventNameEditingController.text}:${eventAddressEditingController.text}";
           postDetailsToFirestore();
           });
         },
-        child: Text("Generate QR Code",
+        child: const Text("Generate QR Code",
           textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
@@ -102,12 +102,12 @@ class _QRGenerateState extends State<QRGenerate> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR Code Generator'),
+        title: const Text('QR Code Generator'),
         centerTitle: true,
       ),
       body: Center(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -117,11 +117,11 @@ class _QRGenerateState extends State<QRGenerate> {
                   size: 200,
                   backgroundColor: Colors.white
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               eventName,
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               eventAddress,
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               generateQRButton,
             ],
           ),

@@ -25,7 +25,7 @@ class _UserDashboardState extends State<UserDashboard> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      this.loggedInUser = UserModel.fromMap(value.data()); //https://dart-lang.github.io/linter/lints/unnecessary_this.html
       setState(() {});
     });
   }
@@ -39,12 +39,12 @@ class _UserDashboardState extends State<UserDashboard> {
         centerTitle: true,
         actions: <Widget>[
           Padding(
-            padding: EdgeInsets.only(right: 20),
+            padding: const EdgeInsets.only(right: 20),
             child: GestureDetector(
                 onTap: () {
                   SignOut(context);
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.logout,
                   size: 26,
                 )
@@ -55,7 +55,7 @@ class _UserDashboardState extends State<UserDashboard> {
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/bg.png"),
                 fit: BoxFit.fill,
@@ -73,34 +73,34 @@ class _UserDashboardState extends State<UserDashboard> {
                     height: 230,
                     child: Image.asset("assets/logo.png",fit: BoxFit.contain),
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     "My Profile",
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text("${loggedInUser.firstName} ${loggedInUser.lastName}",
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black54,
                       fontWeight: FontWeight.w500,
                       fontSize: 20,
                     ),
                   ),
                   Text("${loggedInUser.email}",
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black54,
                       fontWeight: FontWeight.w500,
                       fontSize: 20,
                     ),
                   ),
                   Text("${loggedInUser.phoneNum}",
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black54,
                       fontWeight: FontWeight.w500,
                       fontSize: 20,
                     ),
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -108,14 +108,14 @@ class _UserDashboardState extends State<UserDashboard> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => QRGenerate()));
+                                builder: (context) => const QRGenerate()));
                       },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(40),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
+                          children: const <Widget>[
                             Icon(
                                 Icons.qr_code_2,
                                 size: 50),
@@ -123,14 +123,14 @@ class _UserDashboardState extends State<UserDashboard> {
                           ],
                         ),
                       ),
-                      SizedBox(width: 15),
+                      const SizedBox(width: 15),
                       ElevatedButton(onPressed: () {},
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(40),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
+                          children: const <Widget>[
                             Icon(
                                 Icons.history,
                                 size: 50),
@@ -152,7 +152,7 @@ class _UserDashboardState extends State<UserDashboard> {
   Future<void> SignOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Fluttertoast.showToast(msg: "Signed out !");
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginScreen()));
+    Navigator.of(context).pushReplacement( //have to change to avoid using BuildContexts across async gaps
+        MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 }
