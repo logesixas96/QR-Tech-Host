@@ -14,8 +14,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final _auth = FirebaseAuth.instance;
 
   @override
@@ -42,8 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.mail),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          prefixIcon: const Icon(Icons.mail),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -56,21 +56,22 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: passwordController,
       obscureText: true,
       validator: (value) {
-        RegExp regex = new RegExp(r'^.{6,}$');
+        RegExp regex = RegExp(r'^.{6,}$');
         if (value!.isEmpty) {
           return ("Please enter a password!");
         }
         if (!regex.hasMatch(value)) {
           return ("Password is at least 6 characters!");
         }
+        return null;
       },
       onSaved: (value) {
-        emailController.text = value!;
+        passwordController.text = value!;
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.vpn_key),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          prefixIcon: const Icon(Icons.vpn_key),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Password",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -83,12 +84,12 @@ class _LoginScreenState extends State<LoginScreen> {
       borderRadius: BorderRadius.circular(30),
       color: Colors.redAccent,
       child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           signIn(emailController.text, passwordController.text);
         },
-        child: Text(
+        child: const Text(
           "Login",
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -100,14 +101,15 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-            "Welcome to QR Host Panel. If you are not a host, please sign in through our Mobile App."),
+        title: const Text(
+            "Welcome to QR Host Panel. If you are not a host, please sign in through our Mobile App."
+        ),
         centerTitle: true,
       ),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/bg.png"),
                 fit: BoxFit.fill,
@@ -123,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     SizedBox(
                       height: 300,
                       child: Image.asset(
@@ -131,11 +133,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         fit: BoxFit.contain,
                       ),
                     ),
-                    SizedBox(height: 5),
-                    Container(width: 500, child: emailField),
-                    SizedBox(height: 15),
-                    Container(width: 500, child: passwordField),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 5),
+                    SizedBox(width: 500, child: emailField),
+                    const SizedBox(height: 15),
+                    SizedBox(width: 500, child: passwordField),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -145,9 +147,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ResetPasswordScreen()));
+                                    builder: (context) => const ResetPasswordScreen()));
                           },
-                          child: Text(
+                          child: const Text(
                             "Forgot Password?",
                             style: TextStyle(
                                 color: Colors.redAccent,
@@ -157,13 +159,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 25),
-                    Container(width: 500, child: loginButton),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 25),
+                    SizedBox(width: 500, child: loginButton),
+                    const SizedBox(height: 15),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("Don't have an account? ",
+                        const Text("Don't have an account? ",
                           style: TextStyle(
                             color: Colors.black54,
                             fontWeight: FontWeight.bold,
@@ -176,9 +178,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        SignUpScreen()));
+                                        const SignUpScreen()));
                           },
-                          child: Text(
+                          child: const Text(
                             "Sign Up",
                             style: TextStyle(
                                 color: Colors.redAccent,
@@ -188,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 25),
+                    const SizedBox(height: 25),
                   ],
                 ),
               ),
@@ -208,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Fluttertoast.showToast(
             msg: "Login Successful!", timeInSecForIosWeb: 5),
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => UserDashboard())),
+            MaterialPageRoute(builder: (context) => const UserDashboard())),
       })
           .catchError((e) {
         Fluttertoast.showToast(

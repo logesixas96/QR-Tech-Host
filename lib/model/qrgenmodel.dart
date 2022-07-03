@@ -1,28 +1,28 @@
 class EventCreateModel{
-  String? firstName;
-  String? lastName;
   String? eventName;
   String? eventAddress;
+  String? timeStamp;
+  String? qrData;
 
-  EventCreateModel({this.firstName, this.lastName, this.eventAddress, this.eventName});
+  EventCreateModel({this.eventAddress, this.eventName, this.timeStamp, this.qrData});
 
   //data from server
   factory EventCreateModel.fromMap(map){
     return EventCreateModel(
-      firstName: map['firstName'],
-      lastName: map['lastName'],
       eventName: map['eventName'],
       eventAddress: map['eventAddress'],
+      timeStamp: map['timeStamp'],
+      qrData: map['qrData'],
     );
   }
 
   //sending data to server
   Map<String, dynamic> toMap(){
     return{
-      'firstName': firstName,
-      'lastName': lastName,
       'eventName': eventName,
       'eventAddress': eventAddress,
+      'timeStamp': timeStamp,
+      'qrData': qrData,
     };
   }
 }
