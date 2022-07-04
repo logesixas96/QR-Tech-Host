@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:html';
+import 'package:universal_html/html.dart' as html;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,7 +22,6 @@ class _QRHistoryState extends State<QRHistory> {
   User? user = FirebaseAuth.instance.currentUser;
   final newTextController = TextEditingController();
   GlobalKey globalKey = GlobalKey();
-  String dataLength = "";
 
   @override
   Widget build(BuildContext context) {
@@ -191,29 +190,33 @@ class _QRHistoryState extends State<QRHistory> {
                                                             .doc(event['eventName'])
                                                             .collection("attendance");
 
-                                                        var snapshots = await collection.get();
-                                                        for (var doc in snapshots.docs) {
-                                                          await doc.reference.delete();
-                                                        }
-                                                        firebaseFirestore
-                                                            .collection("users")
-                                                            .doc(user!.uid)
-                                                            .collection("events")
-                                                            .doc(event['eventName'])
-                                                            .delete();
-                                                        Fluttertoast.showToast(
-                                                            msg: "Event successfully deleted!", timeInSecForIosWeb: 5);
-                                                        Navigator.of(context).pop();
-                                                        },
-                                                      child: const Text("Confirm")
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                          );
-                                          },
-                                            icon: const Icon(Icons.delete), label: const Text("Delete Event")),
+                                                                    var snapshots =
+                                                                        await collection.get();
+                                                                    for (var doc
+                                                                        in snapshots.docs) {
+                                                                      await doc.reference.delete();
+                                                                    }
+                                                                    firebaseFirestore
+                                                                        .collection("users")
+                                                                        .doc(user!.uid)
+                                                                        .collection("events")
+                                                                        .doc(event['eventName'])
+                                                                        .delete();
+                                                                    Fluttertoast.showToast(
+                                                                        msg:
+                                                                            "Event successfully deleted!",
+                                                                        timeInSecForIosWeb: 5);
+                                                                    if (!mounted) return;
+                                                                    Navigator.of(context).pop();
+                                                                  },
+                                                                  child: const Text("Confirm"))
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ));
+                                            },
+                                            icon: const Icon(Icons.delete),
+                                            label: const Text("Delete Event")),
                                       ],
                                     ),
                                   ],
@@ -229,6 +232,10 @@ class _QRHistoryState extends State<QRHistory> {
       ),
     );
   }
+  Future<void> myAsyncMethod(BuildContext context, VoidCallback onSuccess) async {
+    await Future.delayed(const Duration(seconds: 2));
+    onSuccess.call();
+  }
 
   void downloadQR() async {
     RenderRepaintBoundary? boundary =
@@ -239,8 +246,7 @@ class _QRHistoryState extends State<QRHistory> {
     Uint8List? pngBytes = byteData?.buffer.asUint8List();
 
     final base64data = base64Encode(pngBytes!);
-    final AnchorElement a =
-        AnchorElement(href: 'data:image/png;base64,$base64data');
+    final html.AnchorElement a = html.AnchorElement(href: 'data:image/png;base64,$base64data');
     a.download = 'QR.png';
     a.click();
     a.remove();

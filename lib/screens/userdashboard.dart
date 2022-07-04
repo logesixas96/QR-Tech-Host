@@ -26,7 +26,7 @@ class _UserDashboardState extends State<UserDashboard> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
   }
@@ -46,7 +46,7 @@ class _UserDashboardState extends State<UserDashboard> {
             padding: const EdgeInsets.only(right: 20),
             child: GestureDetector(
                 onTap: () {
-                  SignOut(context);
+                  signOut(context);
                 },
                 child: const Icon(
                   Icons.logout,
@@ -166,10 +166,16 @@ class _UserDashboardState extends State<UserDashboard> {
     );
   }
 
-  Future<void> SignOut(BuildContext context) async {
+  Future<void> signOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Fluttertoast.showToast(msg: "Signed out !");
+    if (!mounted) return;
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const LoginScreen()));
+  }
+
+  Future<void> myAsyncMethod(BuildContext context, VoidCallback onSuccess) async {
+    await Future.delayed(const Duration(seconds: 2));
+    onSuccess.call();
   }
 }
