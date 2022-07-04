@@ -93,7 +93,7 @@ class _QRHistoryState extends State<QRHistory> {
                                                 ? Colors.red.shade900
                                                 : Colors.red.shade300),
                                         title: Text(event['eventName'] + ", " + event['eventAddress']),
-                                        subtitle: Text("QR Created @ " + event['timeStamp']),
+                                        subtitle: Text("QR Created @  ${event['timeStamp']}"), //added interpolation
                                         trailing: Icon(
                                             Icons.double_arrow_outlined,
                                             color: index.isEven
@@ -174,7 +174,7 @@ class _QRHistoryState extends State<QRHistory> {
                                             child: SingleChildScrollView(
                                               child: AlertDialog(
                                                 title: const Text("Confirm Delete?"),
-                                                content: Text("${"You are deleting '" + event['eventName']}' & all of the information related to the event!"),
+                                                content: Text("You are deleting ${event['eventName']} and  all of the information related to the event!"), //added proper interpolation
                                                 actions: <Widget>[
                                                   TextButton(
                                                       onPressed: () {
@@ -203,8 +203,8 @@ class _QRHistoryState extends State<QRHistory> {
                                                             .delete();
                                                         Fluttertoast.showToast(
                                                             msg: "Event successfully deleted!", timeInSecForIosWeb: 5);
-                                                        Navigator.of(context).pop();
-                                                        },
+                                                        Navigator.of(context).pop(); //still having error with BuildContext across async gaps //do we need this here anyways???
+                                                      },
                                                       child: const Text("Confirm")
                                                   )
                                                 ],
@@ -245,6 +245,4 @@ class _QRHistoryState extends State<QRHistory> {
     a.click();
     a.remove();
   }
-
-
 }
