@@ -113,14 +113,18 @@ class _QRGenerateState extends State<QRGenerate> {
     );
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 1,
         title: const Text('QR Code Generator'),
         centerTitle: true,
       ),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
+            height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -128,30 +132,34 @@ class _QRGenerateState extends State<QRGenerate> {
                 fit: BoxFit.fill,
               ),
             ),
-            child: Form(
-              key: _formKey,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width/10,
-                    vertical: MediaQuery.of(context).size.height/10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 40),
-                    QrImage(
-                        version: QrVersions.auto,
-                        data: qrData,
-                        size: 200,
-                        backgroundColor: Colors.white,
+            child: Center(
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width/10,
+                        vertical: MediaQuery.of(context).size.height/10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //const SizedBox(height: 40),
+                        QrImage(
+                            version: QrVersions.auto,
+                            data: qrData,
+                            size: 200,
+                            backgroundColor: Colors.white,
+                        ),
+                        const SizedBox(height: 80),
+                        SizedBox(width: 800, child: eventName),
+                        const SizedBox(height: 20),
+                        SizedBox(width: 800, child: eventAddress),
+                        const SizedBox(height: 40),
+                        SizedBox(width: 800, child: generateQRButton),
+                        //const SizedBox(height: 40),
+                      ],
                     ),
-                    const SizedBox(height: 80),
-                    Container(width: 800, child: eventName),
-                    const SizedBox(height: 20),
-                    Container(width: 800, child: eventAddress),
-                    const SizedBox(height: 40),
-                    Container(width: 800, child: generateQRButton),
-                    const SizedBox(height: 40),
-                  ],
+                  ),
                 ),
               ),
             ),
