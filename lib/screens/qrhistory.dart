@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'package:universal_html/html.dart' as html;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -22,6 +23,7 @@ class _QRHistoryState extends State<QRHistory> {
   User? user = FirebaseAuth.instance.currentUser;
   final newTextController = TextEditingController();
   GlobalKey globalKey = GlobalKey();
+  get timeStamp => DateFormat('dd MMMM yyyy hh:mm a');
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class _QRHistoryState extends State<QRHistory> {
                       .collection("users")
                       .doc(user!.uid)
                       .collection("events")
+                      .orderBy('eventDate')
                       .snapshots(),
                   builder: (context, AsyncSnapshot snapshot) {
                     if (!snapshot.hasData) {
@@ -61,27 +64,27 @@ class _QRHistoryState extends State<QRHistory> {
                         child: CircularProgressIndicator(),
                       );
                     }
-                    return ListView.builder(
+                    return ListView.separated(
                         physics: const BouncingScrollPhysics(),
+                        separatorBuilder: (context, index) => const SizedBox(height: 10),
                         itemCount: snapshot.data.docs.length,
                         itemBuilder: (context, index) {
                           DocumentSnapshot event = snapshot.data.docs[index];
                           return Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal: MediaQuery.of(context).size.width / 25,
-                              vertical: 10,
                             ),
                             child: Container(
-                              decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.red.shade900.withOpacity(.5),
-                                        blurRadius: 10.0,
-                                        spreadRadius: 0.0,
-                                        offset: const Offset(5.0, 5.0,)
-                                    ),
-                                  ]
-                              ),
+                              decoration: BoxDecoration(boxShadow: [
+                                BoxShadow(
+                                    color: Colors.red.shade900.withOpacity(.5),
+                                    blurRadius: 10.0,
+                                    spreadRadius: 0.0,
+                                    offset: const Offset(
+                                      5.0,
+                                      5.0,
+                                    )),
+                              ]),
                               child: Card(
                                 child: Column(
                                   children: <Widget>[
@@ -91,28 +94,21 @@ class _QRHistoryState extends State<QRHistory> {
                                             color: index.isEven
                                                 ? Colors.red.shade900
                                                 : Colors.red.shade300),
-                                        title: Text(event['eventName'] + ", " + event['eventAddress']),
-                                        subtitle: Text("QR Created @ " + event['timeStamp']),
-                                        trailing: Icon(
-                                            Icons.double_arrow_outlined,
+                                        title:
+                                            Text(event['eventName'] + ", " + event['eventAddress']),
+                                        trailing: Icon(Icons.double_arrow_outlined,
                                             color: index.isEven
                                                 ? Colors.red.shade900
                                                 : Colors.red.shade300),
+                                        subtitle: Text(timeStamp.format(DateTime.fromMillisecondsSinceEpoch((event['eventDate']).millisecondsSinceEpoch))),
                                         onTap: () {
-                                          newTextController.text =
-                                              event['eventName'];
+                                          newTextController.text = event['eventName'];
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      AttendanceList(
-                                                          newTextController.text
-                                                      )
-                                              )
-                                          );
-                                        }
-                                    ),
-                                    //getLength(),
+                                                      AttendanceList(newTextController.text)));
+                                        }),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
@@ -134,8 +130,7 @@ class _QRHistoryState extends State<QRHistory> {
                                                                   onPressed: () {
                                                                     Navigator.pop(context);
                                                                   },
-                                                                  icon: const Icon(
-                                                                      Icons.close,
+                                                                  icon: const Icon(Icons.close,
                                                                       color: Colors.grey)),
                                                             ),
                                                             RepaintBoundary(
@@ -144,16 +139,15 @@ class _QRHistoryState extends State<QRHistory> {
                                                                 version: QrVersions.auto,
                                                                 data: event['qrData'],
                                                                 size: 200,
-                                                                backgroundColor:
-                                                                    Colors.white,
+                                                                backgroundColor: Colors.white,
                                                               ),
                                                             ),
                                                             TextButton.icon(
-                                                                onPressed: () {
-                                                                  downloadQR();
-                                                                },
-                                                                icon: const Icon(Icons.download),
-                                                                label: const Text("Download QR"),
+                                                              onPressed: () {
+                                                                downloadQR();
+                                                              },
+                                                              icon: const Icon(Icons.download),
+                                                              label: const Text("Download QR"),
                                                             )
                                                           ],
                                                         ),
@@ -163,32 +157,35 @@ class _QRHistoryState extends State<QRHistory> {
                                                 ),
                                               );
                                             },
-                                            icon: const Icon(Icons.qr_code_2,
-                                                color: Colors.grey),
+                                            icon: const Icon(Icons.qr_code_2, color: Colors.grey),
                                             label: const Text("Show QR Code",
-                                                style: TextStyle(
-                                                    color: Colors.grey))),
-                                        TextButton.icon(onPressed: () {
-                                          showDialog(context: context, builder: (context) => Center(
-                                            child: SingleChildScrollView(
-                                              child: AlertDialog(
-                                                title: const Text("Confirm Delete?"),
-                                                content: Text("${"You are deleting '" + event['eventName']}' & all of the information related to the event!"),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context).pop();
-                                                      },
-                                                      child: const Text("Cancel")
-                                                  ),
-                                                  TextButton(
-                                                      onPressed: () async {
-                                                        var collection = firebaseFirestore
-                                                            .collection("users")
-                                                            .doc(user!.uid)
-                                                            .collection("events")
-                                                            .doc(event['eventName'])
-                                                            .collection("attendance");
+                                                style: TextStyle(color: Colors.grey))),
+                                        TextButton.icon(
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) => Center(
+                                                        child: SingleChildScrollView(
+                                                          child: AlertDialog(
+                                                            title: const Text("Confirm Delete?"),
+                                                            content: Text(
+                                                                "${"You are deleting '" + event['eventName']}' & all of the information related to the event!"),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                  onPressed: () {
+                                                                    Navigator.of(context).pop();
+                                                                  },
+                                                                  child: const Text("Cancel")),
+                                                              TextButton(
+                                                                  onPressed: () async {
+                                                                    var collection =
+                                                                        firebaseFirestore
+                                                                            .collection("users")
+                                                                            .doc(user!.uid)
+                                                                            .collection("events")
+                                                                            .doc(event['eventName'])
+                                                                            .collection(
+                                                                                "attendance");
 
                                                                     var snapshots =
                                                                         await collection.get();
@@ -241,8 +238,7 @@ class _QRHistoryState extends State<QRHistory> {
     RenderRepaintBoundary? boundary =
         globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
     ui.Image? image = await boundary?.toImage(pixelRatio: 3.0);
-    ByteData? byteData =
-        await image?.toByteData(format: ui.ImageByteFormat.png);
+    ByteData? byteData = await image?.toByteData(format: ui.ImageByteFormat.png);
     Uint8List? pngBytes = byteData?.buffer.asUint8List();
 
     final base64data = base64Encode(pngBytes!);
@@ -251,6 +247,5 @@ class _QRHistoryState extends State<QRHistory> {
     a.click();
     a.remove();
   }
-
 
 }

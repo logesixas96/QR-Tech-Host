@@ -1,11 +1,13 @@
+import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:web_qr_system/model/qrgenmodel.dart';
+import 'package:web_qr_system/screens/qrhistory.dart';
 import '../model/usermodel.dart';
+import 'package:intl/intl.dart';
 
 class QRGenerate extends StatefulWidget {
   const QRGenerate({Key? key}) : super(key: key);
@@ -15,37 +17,35 @@ class QRGenerate extends StatefulWidget {
 }
 
 class _QRGenerateState extends State<QRGenerate> {
-
   final _formKey = GlobalKey<FormState>();
   String qrData = "";
-  String timeStamp = "";
   final eventNameEditingController = TextEditingController();
   final eventAddressEditingController = TextEditingController();
+  final eventDateTimeEditingController = TextEditingController();
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
+  DateTime dateTime = DateTime.now();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     FirebaseFirestore.instance
         .collection("users")
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     final eventName = TextFormField(
       autofocus: false,
       controller: eventNameEditingController,
       keyboardType: TextInputType.text,
       textCapitalization: TextCapitalization.words,
-
       onSaved: (value) {
         eventNameEditingController.text = value!;
       },
@@ -58,12 +58,12 @@ class _QRGenerateState extends State<QRGenerate> {
         }
       },
       decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.event),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Event Name",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+        prefixIcon: const Icon(Icons.drive_file_rename_outline),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: "Event Name",
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
     );
 
@@ -72,7 +72,6 @@ class _QRGenerateState extends State<QRGenerate> {
       controller: eventAddressEditingController,
       keyboardType: TextInputType.text,
       textCapitalization: TextCapitalization.words,
-
       onSaved: (value) {
         eventAddressEditingController.text = value!;
       },
@@ -102,12 +101,41 @@ class _QRGenerateState extends State<QRGenerate> {
         padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          generateQR(eventNameEditingController.text, eventAddressEditingController.text);
+          generateQR(eventNameEditingController.text,
+              eventAddressEditingController.text, eventDateTimeEditingController.text);
         },
-        child: const Text("Generate QR Code",
+        child: const Text(
+          "Generate QR Code",
           textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+
+    final eventDate = TextFormField(
+      readOnly: true,
+      controller: eventDateTimeEditingController,
+      onTap: () async {
+        await pickDateTime();
+      },
+      autofocus: false,
+      onSaved: (value) {
+        eventDateTimeEditingController.text = value!;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          return ("Please select the date & time of your event!");
+        } else {
+          return null;
+        }
+      },
+      decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.calendar_month),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: "Event Date & Time",
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
     );
@@ -138,25 +166,25 @@ class _QRGenerateState extends State<QRGenerate> {
                   key: _formKey,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width/10,
-                        vertical: MediaQuery.of(context).size.height/10),
+                        horizontal: MediaQuery.of(context).size.width / 10,
+                        vertical: MediaQuery.of(context).size.height / 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        //const SizedBox(height: 40),
                         QrImage(
-                            version: QrVersions.auto,
-                            data: qrData,
-                            size: 200,
-                            backgroundColor: Colors.white,
+                          version: QrVersions.auto,
+                          data: qrData,
+                          size: 200,
+                          backgroundColor: Colors.white,
                         ),
-                        const SizedBox(height: 80),
+                        const SizedBox(height: 40),
                         SizedBox(width: 800, child: eventName),
                         const SizedBox(height: 20),
                         SizedBox(width: 800, child: eventAddress),
+                        const SizedBox(height: 20),
+                        SizedBox(width: 800, child: eventDate),
                         const SizedBox(height: 40),
                         SizedBox(width: 800, child: generateQRButton),
-                        //const SizedBox(height: 40),
                       ],
                     ),
                   ),
@@ -169,22 +197,48 @@ class _QRGenerateState extends State<QRGenerate> {
     );
   }
 
-  void generateQR(String eventName, String eventAddress) {
+  Future pickDateTime() async {
+    final date = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(const Duration(days: 365))
+    );
+    if (date == null) return;
+    final time = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now()
+    );
+    if (time == null) return;
+    final newDateTime = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        time.hour,
+        time.minute
+    );
+    setState(() => dateTime = newDateTime);
+    setState(() {
+      eventDateTimeEditingController.text = DateFormat('dd MMMM yyyy hh:mm a').format(dateTime);
+    });
+  }
+
+  void generateQR(String eventName, String eventAddress, String eventDate) {
     if (_formKey.currentState!.validate()) {
       setState(() {
-        qrData = "${loggedInUser.uid}:${eventNameEditingController.text}:${eventAddressEditingController.text}";
-        String liveTimeStamp = DateFormat("dd MMMM yyyy  |  hh:mm a")
-            .format(DateTime.now());
-        timeStamp = liveTimeStamp;
-        postDetailsToFirestore();
+        qrData =
+            "${loggedInUser.uid}:${eventNameEditingController.text}:${eventAddressEditingController.text}:${eventDateTimeEditingController.text}";
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                const QRHistory()));
       });
+      postDetailsToFirestore();
     }
   }
 
-  postDetailsToFirestore() async {
-    //calling firestore
-    //calling user model
-    //sending the values
+  postDetailsToFirestore(){
 
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     EventCreateModel eventCreateModel = EventCreateModel();
@@ -192,7 +246,7 @@ class _QRGenerateState extends State<QRGenerate> {
     //writing all the values
     eventCreateModel.eventName = eventNameEditingController.text;
     eventCreateModel.eventAddress = eventAddressEditingController.text;
-    eventCreateModel.timeStamp = timeStamp;
+    eventCreateModel.eventDate = dateTime;
     eventCreateModel.qrData = qrData;
 
     final eventsRef = firebaseFirestore
@@ -201,18 +255,20 @@ class _QRGenerateState extends State<QRGenerate> {
         .collection("events")
         .doc(eventNameEditingController.text);
 
-    eventsRef.get()
-        .then((docSnapshot) async => {
-          if (docSnapshot.exists) {
-            Fluttertoast.showToast(
-                msg: "Error! You have already created this event!", timeInSecForIosWeb: 5)
-          }
-          else {
-            await eventsRef
-                .set(eventCreateModel.toMap()),
-            Fluttertoast.showToast(
-                msg: "QR successfully generated!", timeInSecForIosWeb: 5)
-          }
-        });
+    eventsRef.get().then((docSnapshot) async => {
+      if (docSnapshot.exists)
+        {
+          Fluttertoast.showToast(
+              msg: "Error! You have already created this event!",
+              timeInSecForIosWeb: 5)
+        }
+      else
+        {
+          await eventsRef.set(eventCreateModel.toMap()),
+          Fluttertoast.showToast(
+              msg: "QR successfully generated!", timeInSecForIosWeb: 5)
+        }
+    });
   }
+
 }
