@@ -1,16 +1,20 @@
 # web_qr_system
 
-A new Flutter project.
+:warning: **IMPORTANT NOTE**: This application is still **in development** and should **not** be used for its intended purpose until a stable version is released.
 
-## Getting Started
+At the current state of the application, this part of the application can only be accessed via browser.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+<p align="center">
+  <img src="/assets/logo.png" width="500"/>
+</p>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### About this application
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This application is to be used in combination with the client-side application **[Android-QR-System](https://github.com/logesixas96/Android-QR-System)**.  
+
+The goal of this application is to allow an user to create an event inputting data such as time, date, and location to generate a unique qr-code that attendees, of the said event, can log their attendance.
+
+---
+**side note**: This application was created as a project during our ([logesixas96](https://github.com/logesixas96) and [kshorenicholas](https://github.com/kshorenicholas)) internship. Future maintanence of these two repositories are yet to be decided.
