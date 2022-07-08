@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AttendanceList extends StatefulWidget {
-  final String newTextController;
+  final String qrDataTextController;
+  final String newEventNameTextController;
 
-  const AttendanceList(this.newTextController, {Key? key}) : super(key: key);
+  const AttendanceList(this.qrDataTextController, this.newEventNameTextController, {Key? key}) : super(key: key);
 
   @override
   State<AttendanceList> createState() => _AttendanceListState();
@@ -26,7 +27,7 @@ class _AttendanceListState extends State<AttendanceList> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 1,
-          title: Text("Attendance List: ${widget.newTextController}"),
+          title: Text("Attendance List: ${widget.newEventNameTextController}"),
           centerTitle: true,
         ),
         body: Center(
@@ -52,7 +53,7 @@ class _AttendanceListState extends State<AttendanceList> {
                                   .collection("users")
                                   .doc(user!.uid)
                                   .collection("events")
-                                  .doc(widget.newTextController)
+                                  .doc(widget.qrDataTextController)
                                   .collection("attendance")
                                   .snapshots(),
                               builder: (context, AsyncSnapshot snapshot) {
@@ -77,7 +78,7 @@ class _AttendanceListState extends State<AttendanceList> {
                                   .collection("users")
                                   .doc(user!.uid)
                                   .collection("events")
-                                  .doc(widget.newTextController)
+                                  .doc(widget.qrDataTextController)
                                   .collection("attendance")
                                   .orderBy('timeStamp')
                                   .snapshots(),
@@ -132,7 +133,7 @@ class _AttendanceListState extends State<AttendanceList> {
                                                           event['firstName'] +
                                                               " " +
                                                               event['lastName'] +
-                                                              " @ " +
+                                                              " - " +
                                                               event['phoneNum']),
                                                       subtitle: Text(timeStamp.format(DateTime.fromMillisecondsSinceEpoch((event['timeStamp']).millisecondsSinceEpoch))),
                                                       trailing: Icon(Icons.task_alt, color: index.isEven ? Colors.green : Colors.green.shade300, size: 40)))));

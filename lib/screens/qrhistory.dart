@@ -21,7 +21,8 @@ class QRHistory extends StatefulWidget {
 class _QRHistoryState extends State<QRHistory> {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   User? user = FirebaseAuth.instance.currentUser;
-  final newTextController = TextEditingController();
+  final qrDataTextController = TextEditingController();
+  final eventNameTextController = TextEditingController();
   GlobalKey globalKey = GlobalKey();
   get timeStamp => DateFormat('dd MMMM yyyy hh:mm a');
 
@@ -95,19 +96,20 @@ class _QRHistoryState extends State<QRHistory> {
                                                 ? Colors.red.shade900
                                                 : Colors.red.shade300),
                                         title:
-                                            Text(event['eventName'] + ", " + event['eventAddress']),
+                                            Text(event['eventName'] + "@" + event['eventAddress']),
                                         trailing: Icon(Icons.double_arrow_outlined,
                                             color: index.isEven
                                                 ? Colors.red.shade900
                                                 : Colors.red.shade300),
                                         subtitle: Text(timeStamp.format(DateTime.fromMillisecondsSinceEpoch((event['eventDate']).millisecondsSinceEpoch))),
                                         onTap: () {
-                                          newTextController.text = event['eventName'];
+                                          qrDataTextController.text = event['qrData'];
+                                          eventNameTextController.text = event['eventName'];
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      AttendanceList(newTextController.text)));
+                                                      AttendanceList(qrDataTextController.text, eventNameTextController.text)));
                                         }),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
@@ -183,7 +185,7 @@ class _QRHistoryState extends State<QRHistory> {
                                                                             .collection("users")
                                                                             .doc(user!.uid)
                                                                             .collection("events")
-                                                                            .doc(event['eventName'])
+                                                                            .doc(event['qrData'])
                                                                             .collection(
                                                                                 "attendance");
 
@@ -197,7 +199,7 @@ class _QRHistoryState extends State<QRHistory> {
                                                                         .collection("users")
                                                                         .doc(user!.uid)
                                                                         .collection("events")
-                                                                        .doc(event['eventName'])
+                                                                        .doc(event['qrData'])
                                                                         .delete();
                                                                     Fluttertoast.showToast(
                                                                         msg:

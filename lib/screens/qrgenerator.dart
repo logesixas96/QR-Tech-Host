@@ -253,7 +253,7 @@ class _QRGenerateState extends State<QRGenerate> {
         .collection("users")
         .doc(user!.uid)
         .collection("events")
-        .doc(eventNameEditingController.text);
+        .doc(qrData);
 
     eventsRef.get().then((docSnapshot) async => {
       if (docSnapshot.exists)
