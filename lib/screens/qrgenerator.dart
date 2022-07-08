@@ -228,11 +228,6 @@ class _QRGenerateState extends State<QRGenerate> {
       setState(() {
         qrData =
             "${loggedInUser.uid}:${eventNameEditingController.text}:${eventAddressEditingController.text}:${eventDateTimeEditingController.text}";
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                const QRHistory()));
       });
       postDetailsToFirestore();
     }
@@ -266,7 +261,8 @@ class _QRGenerateState extends State<QRGenerate> {
         {
           await eventsRef.set(eventCreateModel.toMap()),
           Fluttertoast.showToast(
-              msg: "QR successfully generated!", timeInSecForIosWeb: 5)
+              msg: "QR successfully generated!", timeInSecForIosWeb: 5),
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const QRHistory()))
         }
     });
   }

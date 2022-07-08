@@ -10,6 +10,7 @@ import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:web_qr_system/screens/attendancelist.dart';
+import 'package:web_qr_system/screens/userdashboard.dart';
 
 class QRHistory extends StatefulWidget {
   const QRHistory({Key? key}) : super(key: key);
@@ -34,6 +35,12 @@ class _QRHistoryState extends State<QRHistory> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 1,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const UserDashboard()));
+          },
+        ),
         title: const Text("My Events"),
         centerTitle: true,
       ),
