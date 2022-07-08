@@ -7,7 +7,10 @@ class AttendanceList extends StatefulWidget {
   final String qrDataTextController;
   final String newEventNameTextController;
 
-  const AttendanceList(this.qrDataTextController, this.newEventNameTextController, {Key? key}) : super(key: key);
+  const AttendanceList(
+      this.qrDataTextController, this.newEventNameTextController,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<AttendanceList> createState() => _AttendanceListState();
@@ -42,12 +45,9 @@ class _AttendanceListState extends State<AttendanceList> {
                       ),
                     ),
                     child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: MediaQuery.of(context).size.width / 10,
-                            vertical: MediaQuery.of(context).size.height / 25),
-                        child: SingleChildScrollView(
-                            child:
-                                ListView(shrinkWrap: true, children: <Widget>[
+                      padding: EdgeInsets.fromLTRB(0, 55, 0, MediaQuery.of(context).size.height / 30),
+                      child: ListView(
+                        children: [
                           StreamBuilder<QuerySnapshot>(
                               stream: firebaseFirestore
                                   .collection("users")
@@ -64,14 +64,11 @@ class _AttendanceListState extends State<AttendanceList> {
                                           child: CircularProgressIndicator()));
                                 }
                                 return Center(
-                                    child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 70, 0, 30),
-                                        child: Text(
-                                            "Total Attendance: ${snapshot.data.docs.length}",
-                                            style: const TextStyle(
-                                                fontSize: 30,
-                                                fontWeight: FontWeight.bold))));
+                                    child: Text(
+                                        "Total Attendance: ${snapshot.data.docs.length}",
+                                        style: const TextStyle(
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.bold)));
                               }),
                           StreamBuilder<QuerySnapshot>(
                               stream: firebaseFirestore
@@ -98,15 +95,14 @@ class _AttendanceListState extends State<AttendanceList> {
                                       DocumentSnapshot event =
                                           snapshot.data.docs[index];
                                       return Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  25,
-                                              vertical: 5),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: MediaQuery.of(context).size.width / 30,
+                                          vertical: 5
+                                        ),
+                                        child: Center(
                                           child: Container(
-                                              decoration:
-                                                  BoxDecoration(boxShadow: [
+                                            width: 500,
+                                              decoration: BoxDecoration(boxShadow: [
                                                 BoxShadow(
                                                     color: index.isEven
                                                         ? Colors.red.shade900
@@ -115,30 +111,36 @@ class _AttendanceListState extends State<AttendanceList> {
                                                             .withOpacity(.5),
                                                     blurRadius: 10.0,
                                                     spreadRadius: 0.0,
-                                                    offset:
-                                                        const Offset(5.0, 5.0))
+                                                    offset: const Offset(5.0, 5.0))
                                               ]),
                                               child: Card(
                                                   child: ListTile(
-                                                      leading:
-                                                          Icon(Icons.supervisor_account,
-                                                              size: 40,
-                                                              color: index
-                                                                      .isEven
-                                                                  ? Colors.red
-                                                                      .shade900
-                                                                  : Colors.red
-                                                                      .shade300),
-                                                      title: Text(
-                                                          event['firstName'] +
-                                                              " " +
-                                                              event['lastName'] +
-                                                              " - " +
-                                                              event['phoneNum']),
-                                                      subtitle: Text(timeStamp.format(DateTime.fromMillisecondsSinceEpoch((event['timeStamp']).millisecondsSinceEpoch))),
-                                                      trailing: Icon(Icons.task_alt, color: index.isEven ? Colors.green : Colors.green.shade300, size: 40)))));
+                                                      leading: Icon(
+                                                          Icons.supervisor_account,
+                                                          size: 40,
+                                                          color: index.isEven
+                                                              ? Colors.red.shade900
+                                                              : Colors.red.shade300),
+                                                      title: Text(event['firstName'] +
+                                                          " " +
+                                                          event['lastName'] +
+                                                          " - " +
+                                                          event['phoneNum']),
+                                                      subtitle: Text(timeStamp.format(
+                                                          DateTime.fromMillisecondsSinceEpoch(
+                                                              (event['timeStamp'])
+                                                                  .millisecondsSinceEpoch))),
+                                                      trailing: Icon(Icons.task_alt,
+                                                          color: index.isEven
+                                                              ? Colors.green
+                                                              : Colors.green.shade300,
+                                                          size: 40)))),
+                                        ),
+                                      );
                                     });
-                              })
-                        ])))))));
+                              }),
+                        ],
+                      ),
+                    )))));
   }
 }

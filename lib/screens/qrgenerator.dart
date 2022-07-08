@@ -177,7 +177,7 @@ class _QRGenerateState extends State<QRGenerate> {
                           size: 200,
                           backgroundColor: Colors.white,
                         ),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 60),
                         SizedBox(width: 800, child: eventName),
                         const SizedBox(height: 20),
                         SizedBox(width: 800, child: eventAddress),
