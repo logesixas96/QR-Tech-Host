@@ -102,8 +102,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }
 
         //reg expression for email validation
-        if (!RegExp("^[a-zA-Z0-9+_.-.-]+@[a-zA-Z0-9+_.-.-]+.[a-z]")
-            .hasMatch(value)) {
+        if (!RegExp("^[a-zA-Z0-9+_.-.-]+@[a-zA-Z0-9+_.-.-]+.[a-z]").hasMatch(value)) {
           return ("Please enter a valid email!");
         }
         return null;
@@ -126,9 +125,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       autofocus: false,
       controller: phoneNumEditingController,
       keyboardType: TextInputType.number,
-      inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.digitsOnly
-      ],
+      inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
       validator: (value) {
         if (value!.isEmpty) {
           return ("Please enter your phone number!");
@@ -186,8 +183,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       controller: confirmPasswordEditingController,
       obscureText: true,
       validator: (value) {
-        if (confirmPasswordEditingController.text !=
-            passwordEditingController.text) {
+        if (confirmPasswordEditingController.text != passwordEditingController.text) {
           return "Password does not match!";
         }
         return null;
@@ -197,12 +193,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.vpn_key),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Confirm Password",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          )),
+        prefixIcon: const Icon(Icons.vpn_key),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: "Confirm Password",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      ),
     );
 
     //signup button
@@ -219,8 +214,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: const Text(
           "Sign Up",
           textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -229,6 +223,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 1,
         leading: IconButton(
@@ -257,13 +252,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   key: _formKey,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width/10,
-                        vertical: MediaQuery.of(context).size.height/10),
+                        horizontal: MediaQuery.of(context).size.width / 10,
+                        vertical: MediaQuery.of(context).size.height / 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        //SizedBox(height: 25),
                         SizedBox(
                           height: 300,
                           child: Image.asset(
@@ -325,16 +319,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     userModel.lastName = lastNameEditingController.text;
     userModel.phoneNum = phoneNumEditingController.text;
 
-    await firebaseFirestore
-        .collection("users")
-        .doc(user.uid)
-        .set(userModel.toMap());
-    Fluttertoast.showToast(
-        msg: "Account created successfully!", timeInSecForIosWeb: 5);
+    await firebaseFirestore.collection("users").doc(user.uid).set(userModel.toMap());
+    Fluttertoast.showToast(msg: "Account created successfully!", timeInSecForIosWeb: 5);
 
-    Navigator.pushAndRemoveUntil(
-        (context),
-        MaterialPageRoute(builder: (context) => const UserDashboard()),
-            (route) => false);
+    Navigator.pushAndRemoveUntil((context),
+        MaterialPageRoute(builder: (context) => const UserDashboard()), (route) => false);
   }
 }

@@ -25,6 +25,7 @@ class _QRHistoryState extends State<QRHistory> {
   final qrDataTextController = TextEditingController();
   final eventNameTextController = TextEditingController();
   GlobalKey globalKey = GlobalKey();
+
   get timeStamp => DateFormat('dd MMMM yyyy hh:mm a');
 
   @override
@@ -77,9 +78,7 @@ class _QRHistoryState extends State<QRHistory> {
                           DocumentSnapshot event = snapshot.data.docs[index];
                           return Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: MediaQuery.of(context).size.width / 30,
-                              vertical: 10
-                            ),
+                                horizontal: MediaQuery.of(context).size.width / 30, vertical: 10),
                             child: Center(
                               child: Container(
                                 width: 800,
@@ -102,21 +101,24 @@ class _QRHistoryState extends State<QRHistory> {
                                               color: index.isEven
                                                   ? Colors.red.shade900
                                                   : Colors.red.shade300),
-                                          title:
-                                              Text(event['eventName'] + "@" + event['eventAddress']),
+                                          title: Text(
+                                              event['eventName'] + "@" + event['eventAddress']),
                                           trailing: Icon(Icons.double_arrow_outlined,
                                               color: index.isEven
                                                   ? Colors.red.shade900
                                                   : Colors.red.shade300),
-                                          subtitle: Text(timeStamp.format(DateTime.fromMillisecondsSinceEpoch((event['eventDate']).millisecondsSinceEpoch))),
+                                          subtitle: Text(timeStamp.format(
+                                              DateTime.fromMillisecondsSinceEpoch(
+                                                  (event['eventDate']).millisecondsSinceEpoch))),
                                           onTap: () {
                                             qrDataTextController.text = event['qrData'];
                                             eventNameTextController.text = event['eventName'];
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        AttendanceList(qrDataTextController.text, eventNameTextController.text)));
+                                                    builder: (context) => AttendanceList(
+                                                        qrDataTextController.text,
+                                                        eventNameTextController.text)));
                                           }),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
@@ -131,7 +133,8 @@ class _QRHistoryState extends State<QRHistory> {
                                                         content: SizedBox(
                                                           width: 300,
                                                           child: Column(
-                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment.center,
                                                             children: <Widget>[
                                                               Align(
                                                                 alignment: Alignment.topRight,
@@ -200,7 +203,8 @@ class _QRHistoryState extends State<QRHistory> {
                                                                           await collection.get();
                                                                       for (var doc
                                                                           in snapshots.docs) {
-                                                                        await doc.reference.delete();
+                                                                        await doc.reference
+                                                                            .delete();
                                                                       }
                                                                       firebaseFirestore
                                                                           .collection("users")
@@ -239,6 +243,7 @@ class _QRHistoryState extends State<QRHistory> {
       ),
     );
   }
+
   Future<void> myAsyncMethod(BuildContext context, VoidCallback onSuccess) async {
     await Future.delayed(const Duration(seconds: 2));
     onSuccess.call();
@@ -257,5 +262,4 @@ class _QRHistoryState extends State<QRHistory> {
     a.click();
     a.remove();
   }
-
 }
