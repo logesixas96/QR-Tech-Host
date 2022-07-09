@@ -19,7 +19,7 @@ class _UserDashboardState extends State<UserDashboard> {
   UserModel loggedInUser = UserModel();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     FirebaseFirestore.instance
         .collection("users")
@@ -37,9 +37,10 @@ class _UserDashboardState extends State<UserDashboard> {
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 1,
-        title: Text("Welcome ${loggedInUser.firstName}"),
+        title: Text("Welcome ${loggedInUser.firstName} !"),
         centerTitle: true,
         actions: <Widget>[
           Padding(
@@ -52,8 +53,7 @@ class _UserDashboardState extends State<UserDashboard> {
                   Icons.logout,
                   size: 26,
                   color: Colors.redAccent,
-                )
-            ),
+                )),
           )
         ],
       ),
@@ -72,38 +72,41 @@ class _UserDashboardState extends State<UserDashboard> {
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width/10,
-                      vertical: MediaQuery.of(context).size.height/10),
+                      horizontal: MediaQuery.of(context).size.width / 10,
+                      vertical: MediaQuery.of(context).size.height / 10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(
                         height: 300,
-                        child: Image.asset("assets/logo.png",
-                            fit: BoxFit.fill),
+                        child: Image.asset("assets/logo.png", fit: BoxFit.fill),
                       ),
                       const SizedBox(height: 10),
                       const Text(
                         "My Profile",
-                        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 20),
-                      Text("${loggedInUser.firstName} ${loggedInUser.lastName}",
+                      Text(
+                        "${loggedInUser.firstName} ${loggedInUser.lastName}",
                         style: const TextStyle(
                           color: Colors.black54,
                           fontWeight: FontWeight.w500,
                           fontSize: 20,
                         ),
                       ),
-                      Text("${loggedInUser.email}",
+                      Text(
+                        "${loggedInUser.email}",
                         style: const TextStyle(
                           color: Colors.black54,
                           fontWeight: FontWeight.w500,
                           fontSize: 20,
                         ),
                       ),
-                      Text("${loggedInUser.phoneNum}",
+                      Text(
+                        "${loggedInUser.phoneNum}",
                         style: const TextStyle(
                           color: Colors.black54,
                           fontWeight: FontWeight.w500,
@@ -111,49 +114,49 @@ class _UserDashboardState extends State<UserDashboard> {
                         ),
                       ),
                       const SizedBox(height: 40),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          ElevatedButton(onPressed: () {
+                      SizedBox(
+                        width: 200,
+                        child: ElevatedButton(
+                          onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const QRGenerate()));
+                                    builder: (context) =>
+                                        const QRGenerate()));
                           },
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(40),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
-                                Icon(
-                                    Icons.qr_code_2,
-                                    size: 50),
-                                Text('Generate New QR'),
-                              ],
-                            ),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.all(20),
                           ),
-                          const SizedBox(width: 15),
-                          ElevatedButton(onPressed: () {
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const <Widget>[
+                              Icon(Icons.qr_code_2, size: 50),
+                              Text('Generate New QR'),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      SizedBox(
+                        width: 200,
+                        child: ElevatedButton(
+                          onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const QRHistory()));
                           },
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(40),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
-                                Icon(
-                                    Icons.history,
-                                    size: 50),
-                                Text('View Attendance'),
-                              ],
-                            ),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.all(20),
                           ),
-                        ],
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const <Widget>[
+                              Icon(Icons.history, size: 50),
+                              Text('View Attendance'),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -172,10 +175,5 @@ class _UserDashboardState extends State<UserDashboard> {
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const LoginScreen()));
-  }
-
-  Future<void> myAsyncMethod(BuildContext context, VoidCallback onSuccess) async {
-    await Future.delayed(const Duration(seconds: 2));
-    onSuccess.call();
   }
 }
