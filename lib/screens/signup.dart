@@ -246,40 +246,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 fit: BoxFit.fill,
               ),
             ),
-            child: Center(
-              child: SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width / 10,
-                        vertical: MediaQuery.of(context).size.height / 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 300,
-                          child: Image.asset(
-                            "assets/logo.png",
-                            fit: BoxFit.contain,
-                          ),
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width / 10,
+                      vertical: MediaQuery.of(context).size.height / 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 300,
+                        child: Image.asset(
+                          "assets/logo.png",
+                          fit: BoxFit.contain,
                         ),
-                        SizedBox(width: 500, child: firstNameField),
-                        const SizedBox(height: 20),
-                        SizedBox(width: 500, child: lastNameField),
-                        const SizedBox(height: 20),
-                        SizedBox(width: 500, child: emailField),
-                        const SizedBox(height: 20),
-                        SizedBox(width: 500, child: phoneNumField),
-                        const SizedBox(height: 20),
-                        SizedBox(width: 500, child: passwordField),
-                        const SizedBox(height: 20),
-                        SizedBox(width: 500, child: confirmPasswordField),
-                        const SizedBox(height: 35),
-                        SizedBox(width: 500, child: signUpButton),
-                      ],
-                    ),
+                      ),
+                      SizedBox(width: 500, child: firstNameField),
+                      const SizedBox(height: 20),
+                      SizedBox(width: 500, child: lastNameField),
+                      const SizedBox(height: 20),
+                      SizedBox(width: 500, child: emailField),
+                      const SizedBox(height: 20),
+                      SizedBox(width: 500, child: phoneNumField),
+                      const SizedBox(height: 20),
+                      SizedBox(width: 500, child: passwordField),
+                      const SizedBox(height: 20),
+                      SizedBox(width: 500, child: confirmPasswordField),
+                      const SizedBox(height: 35),
+                      SizedBox(width: 500, child: signUpButton),
+                    ],
                   ),
                 ),
               ),

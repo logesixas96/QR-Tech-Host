@@ -99,39 +99,37 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 fit: BoxFit.fill,
               ),
             ),
-            child: Center(
-              child: SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width/10,
-                        vertical: MediaQuery.of(context).size.height/10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        //const SizedBox(height: 25),
-                        SizedBox(
-                          height: 300,
-                          child: Image.asset(
-                            "assets/logo.png",
-                            fit: BoxFit.contain,
-                          ),
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width/10,
+                      vertical: MediaQuery.of(context).size.height/10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      //const SizedBox(height: 25),
+                      SizedBox(
+                        height: 300,
+                        child: Image.asset(
+                          "assets/logo.png",
+                          fit: BoxFit.contain,
                         ),
-                        const SizedBox(height: 15),
-                        SizedBox(
-                            width: 500,
-                            child: emailField
-                        ),
-                        const SizedBox(height: 35),
-                        SizedBox(
-                            width: 500,
-                            child: resetButton
-                        ),
-                        //const SizedBox(height: 85),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 15),
+                      SizedBox(
+                          width: 500,
+                          child: emailField
+                      ),
+                      const SizedBox(height: 35),
+                      SizedBox(
+                          width: 500,
+                          child: resetButton
+                      ),
+                      //const SizedBox(height: 85),
+                    ],
                   ),
                 ),
               ),
