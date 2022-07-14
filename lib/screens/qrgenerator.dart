@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:web_qr_system/model/qrgenmodel.dart';
 import 'package:web_qr_system/screens/qrhistory.dart';
-import '../model/usermodel.dart';
+import 'package:web_qr_system/model/usermodel.dart';
 import 'package:intl/intl.dart';
 
 class QRGenerate extends StatefulWidget {
@@ -61,12 +61,9 @@ class _QRGenerateState extends State<QRGenerate> {
         prefixIcon: const Icon(Icons.drive_file_rename_outline),
         contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         hintText: "Event Name",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
-
     final eventAddress = TextFormField(
       autofocus: false,
       controller: eventAddressEditingController,
@@ -87,12 +84,9 @@ class _QRGenerateState extends State<QRGenerate> {
         prefixIcon: const Icon(Icons.location_pin),
         contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         hintText: "Event Location Name",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
-
     final generateQRButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
@@ -101,8 +95,10 @@ class _QRGenerateState extends State<QRGenerate> {
         padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          generateQR(eventNameEditingController.text,
-              eventAddressEditingController.text, eventDateTimeEditingController.text);
+          generateQR(
+              eventNameEditingController.text,
+              eventAddressEditingController.text,
+              eventDateTimeEditingController.text);
         },
         child: const Text(
           "Generate QR Code",
@@ -112,7 +108,6 @@ class _QRGenerateState extends State<QRGenerate> {
         ),
       ),
     );
-
     final eventDate = TextFormField(
       readOnly: true,
       controller: eventDateTimeEditingController,
@@ -134,21 +129,17 @@ class _QRGenerateState extends State<QRGenerate> {
         prefixIcon: const Icon(Icons.calendar_month),
         contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         hintText: "Event Date & Time",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 1,
-        title: const Text('QR Code Generator'),
-        centerTitle: true,
-      ),
+          backgroundColor: Colors.transparent,
+          elevation: 1,
+          title: const Text('QR Code Generator'),
+          centerTitle: true),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
@@ -156,9 +147,7 @@ class _QRGenerateState extends State<QRGenerate> {
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/bg.png"),
-                fit: BoxFit.fill,
-              ),
+                  image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
             ),
             child: Center(
               child: SingleChildScrollView(
@@ -172,11 +161,10 @@ class _QRGenerateState extends State<QRGenerate> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         QrImage(
-                          version: QrVersions.auto,
-                          data: qrData,
-                          size: 200,
-                          backgroundColor: Colors.white,
-                        ),
+                            version: QrVersions.auto,
+                            data: qrData,
+                            size: 200,
+                            backgroundColor: Colors.white),
                         const SizedBox(height: 60),
                         SizedBox(width: 800, child: eventName),
                         const SizedBox(height: 20),
@@ -184,7 +172,7 @@ class _QRGenerateState extends State<QRGenerate> {
                         const SizedBox(height: 20),
                         SizedBox(width: 800, child: eventDate),
                         const SizedBox(height: 40),
-                        SizedBox(width: 800, child: generateQRButton),
+                        SizedBox(width: 800, child: generateQRButton)
                       ],
                     ),
                   ),
@@ -202,24 +190,17 @@ class _QRGenerateState extends State<QRGenerate> {
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
-        lastDate: DateTime.now().add(const Duration(days: 365))
-    );
+        lastDate: DateTime.now().add(const Duration(days: 365)));
     if (date == null) return;
-    final time = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now()
-    );
+    final time =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
     if (time == null) return;
-    final newDateTime = DateTime(
-        date.year,
-        date.month,
-        date.day,
-        time.hour,
-        time.minute
-    );
+    final newDateTime =
+        DateTime(date.year, date.month, date.day, time.hour, time.minute);
     setState(() => dateTime = newDateTime);
     setState(() {
-      eventDateTimeEditingController.text = DateFormat('dd MMMM yyyy hh:mm a').format(dateTime);
+      eventDateTimeEditingController.text =
+          DateFormat('dd MMMM yyyy hh:mm a').format(dateTime);
     });
   }
 
@@ -233,38 +214,35 @@ class _QRGenerateState extends State<QRGenerate> {
     }
   }
 
-  postDetailsToFirestore(){
-
+  postDetailsToFirestore() {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     EventCreateModel eventCreateModel = EventCreateModel();
-
-    //writing all the values
     eventCreateModel.eventName = eventNameEditingController.text;
     eventCreateModel.eventAddress = eventAddressEditingController.text;
     eventCreateModel.eventDate = dateTime;
     eventCreateModel.qrData = qrData;
-
     final eventsRef = firebaseFirestore
         .collection("users")
         .doc(user!.uid)
         .collection("events")
         .doc(qrData);
-
     eventsRef.get().then((docSnapshot) async => {
-      if (docSnapshot.exists)
-        {
-          Fluttertoast.showToast(
-              msg: "Error! You have already created this event!",
-              timeInSecForIosWeb: 5)
-        }
-      else
-        {
-          await eventsRef.set(eventCreateModel.toMap()),
-          Fluttertoast.showToast(
-              msg: "QR successfully generated!", timeInSecForIosWeb: 5),
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const QRHistory()))
-        }
-    });
+          if (docSnapshot.exists)
+            {
+              Fluttertoast.showToast(
+                  msg: "Error! You have already created this event!",
+                  timeInSecForIosWeb: 5)
+            }
+          else
+            {
+              await eventsRef.set(eventCreateModel.toMap()),
+              Fluttertoast.showToast(
+                  msg: "QR successfully generated!", timeInSecForIosWeb: 5),
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const QRHistory()),
+              )
+            }
+        });
   }
-
 }

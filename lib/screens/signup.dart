@@ -16,27 +16,23 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
-
   final firstNameEditingController = TextEditingController();
   final lastNameEditingController = TextEditingController();
   final emailEditingController = TextEditingController();
   final phoneNumEditingController = TextEditingController();
   final passwordEditingController = TextEditingController();
   final confirmPasswordEditingController = TextEditingController();
-
   final _auth = FirebaseAuth.instance;
   String datetime = DateFormat("dd MMMM yyyy | hh:mm a").format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
-    //first name field
     final firstNameField = TextFormField(
       autofocus: false,
       controller: firstNameEditingController,
       keyboardType: TextInputType.name,
       textCapitalization: TextCapitalization.words,
       inputFormatters: [
-        // only accept letters from a to z
         FilteringTextInputFormatter(RegExp(r'[a-zA-Z ]'), allow: true)
       ],
       validator: (value) {
@@ -54,22 +50,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.account_circle),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "First Name",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          )),
+        prefixIcon: const Icon(Icons.account_circle),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: "First Name",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      ),
     );
-
-    //last name field
     final lastNameField = TextFormField(
       autofocus: false,
       controller: lastNameEditingController,
       keyboardType: TextInputType.name,
       textCapitalization: TextCapitalization.words,
       inputFormatters: [
-        // only accept letters from a to z
         FilteringTextInputFormatter(RegExp(r'[a-zA-Z ]'), allow: true)
       ],
       validator: (value) {
@@ -83,15 +75,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.account_circle),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Last Name",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          )),
+        prefixIcon: const Icon(Icons.account_circle),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: "Last Name",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      ),
     );
-
-    //email field
     final emailField = TextFormField(
       autofocus: false,
       controller: emailEditingController,
@@ -100,9 +89,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (value!.isEmpty) {
           return ("Please enter your email!");
         }
-
-        //reg expression for email validation
-        if (!RegExp("^[a-zA-Z0-9+_.-.-]+@[a-zA-Z0-9+_.-.-]+.[a-z]").hasMatch(value)) {
+        if (!RegExp("^[a-zA-Z0-9+_.-.-]+@[a-zA-Z0-9+_.-.-]+.[a-z]")
+            .hasMatch(value)) {
           return ("Please enter a valid email!");
         }
         return null;
@@ -112,20 +100,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.mail),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Email",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          )),
+        prefixIcon: const Icon(Icons.mail),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: "Email",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      ),
     );
-
-    //phone number field
     final phoneNumField = TextFormField(
       autofocus: false,
       controller: phoneNumEditingController,
       keyboardType: TextInputType.number,
-      inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
       validator: (value) {
         if (value!.isEmpty) {
           return ("Please enter your phone number!");
@@ -133,7 +120,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (!RegExp(r'^.{10,11}$').hasMatch(value)) {
           return ("Please enter a valid phone number! (01x...)");
         }
-
         return null;
       },
       onSaved: (value) {
@@ -141,15 +127,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.phone),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Phone Number",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          )),
+        prefixIcon: const Icon(Icons.phone),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: "Phone Number",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      ),
     );
-
-    //password field
     final passwordField = TextFormField(
       autofocus: false,
       controller: passwordEditingController,
@@ -169,21 +152,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.vpn_key),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Password",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          )),
+        prefixIcon: const Icon(Icons.vpn_key),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: "Password",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      ),
     );
-
-    //confirm password field
     final confirmPasswordField = TextFormField(
       autofocus: false,
       controller: confirmPasswordEditingController,
       obscureText: true,
       validator: (value) {
-        if (confirmPasswordEditingController.text != passwordEditingController.text) {
+        if (confirmPasswordEditingController.text !=
+            passwordEditingController.text) {
           return "Password does not match!";
         }
         return null;
@@ -199,8 +180,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
-
-    //signup button
     final signUpButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
@@ -214,27 +193,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: const Text(
           "Sign Up",
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
     );
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 1,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: const Text("Sign up for an account now"),
-        centerTitle: true,
-      ),
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.transparent,
+          elevation: 1,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          title: const Text("Sign up for an account now"),
+          centerTitle: true),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
@@ -242,9 +220,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             height: MediaQuery.of(context).size.height,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/bg.png"),
-                fit: BoxFit.fill,
-              ),
+                  image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
             ),
             child: SingleChildScrollView(
               child: Form(
@@ -259,10 +235,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: <Widget>[
                       SizedBox(
                         height: 300,
-                        child: Image.asset(
-                          "assets/logo.png",
-                          fit: BoxFit.contain,
-                        ),
+                        child:
+                            Image.asset("assets/logo.png", fit: BoxFit.contain),
                       ),
                       SizedBox(width: 500, child: firstNameField),
                       const SizedBox(height: 20),
@@ -288,7 +262,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  //signup function
   void signUp(String email, String password) async {
     if (_formKey.currentState!.validate()) {
       await _auth
@@ -301,26 +274,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   postDetailsToFirestore() async {
-    //calling firestore
-    //calling user model
-    //sending the values
-
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
-
     UserModel userModel = UserModel();
-
-    //writing all the values
     userModel.email = user!.email;
     userModel.uid = user.uid;
     userModel.firstName = firstNameEditingController.text;
     userModel.lastName = lastNameEditingController.text;
     userModel.phoneNum = phoneNumEditingController.text;
-
-    await firebaseFirestore.collection("users").doc(user.uid).set(userModel.toMap());
-    Fluttertoast.showToast(msg: "Account created successfully!", timeInSecForIosWeb: 5);
-
-    Navigator.pushAndRemoveUntil((context),
-        MaterialPageRoute(builder: (context) => const UserDashboard()), (route) => false);
+    await firebaseFirestore
+        .collection("users")
+        .doc(user.uid)
+        .set(userModel.toMap());
+    Fluttertoast.showToast(
+        msg: "Account created successfully!", timeInSecForIosWeb: 5);
+    Navigator.pushAndRemoveUntil(
+        (context),
+        MaterialPageRoute(builder: (context) => const UserDashboard()),
+        (route) => false);
   }
 }

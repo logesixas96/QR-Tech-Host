@@ -13,14 +13,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
-    //email field
     final emailField = TextFormField(
       autofocus: false,
       controller: emailController,
@@ -29,8 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
         if (value!.isEmpty) {
           return ("Please enter your email!");
         }
-
-        //reg expression for email validation
         if (!RegExp("^[a-zA-Z0-9+_.-.-]+@[a-zA-Z0-9+_.-.-]+.[a-z]")
             .hasMatch(value)) {
           return ("Please enter a valid email!");
@@ -42,20 +39,17 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.mail), //prefer const with constant constructor
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Email",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          )),
+        prefixIcon: const Icon(Icons.mail),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: "Email",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      ),
     );
-
-    //password field
     final passwordField = TextFormField(
       autofocus: false,
       controller: passwordController,
       obscureText: true,
-      validator: (value) { //no return value set. adding return null
+      validator: (value) {
         RegExp regex = RegExp(r'^.{6,}$');
         if (value!.isEmpty) {
           return ("Please enter a password!");
@@ -70,15 +64,12 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.vpn_key),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Password",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          )),
+        prefixIcon: const Icon(Icons.vpn_key),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: "Password",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      ),
     );
-
-    //login button
     final loginButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
@@ -97,17 +88,15 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 1,
-        title: const Text("Welcome to QR Host Panel"),
-        centerTitle: true,
-      ),
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.transparent,
+          elevation: 1,
+          title: const Text("Welcome to QR Host Panel"),
+          centerTitle: true),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
@@ -115,27 +104,23 @@ class _LoginScreenState extends State<LoginScreen> {
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/bg.png"),
-                fit: BoxFit.fill,
-              ),
+                  image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
             ),
             child: SingleChildScrollView(
               child: Form(
                 key: _formKey,
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width/10,
-                      vertical: MediaQuery.of(context).size.height/10),
+                      horizontal: MediaQuery.of(context).size.width / 10,
+                      vertical: MediaQuery.of(context).size.height / 10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(
                         height: 300,
-                        child: Image.asset(
-                          "assets/logo.png",
-                          fit: BoxFit.contain,
-                        ),
+                        child:
+                            Image.asset("assets/logo.png", fit: BoxFit.contain),
                       ),
                       const SizedBox(height: 5),
                       SizedBox(width: 500, child: emailField),
@@ -149,9 +134,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const ResetPasswordScreen()));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ResetPasswordScreen()),
+                              );
                             },
                             child: const Text(
                               "Forgot Password?",
@@ -160,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15),
                             ),
-                          ),
+                          )
                         ],
                       ),
                       const SizedBox(height: 25),
@@ -169,20 +156,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          const Text("Don't have an account? ",
+                          const Text(
+                            "Don't have an account? ",
                             style: TextStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic,
-                            ),
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic),
                           ),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SignUpScreen()));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const SignUpScreen()),
+                              );
                             },
                             child: const Text(
                               "Sign Up",
@@ -191,10 +178,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15),
                             ),
-                          ),
+                          )
                         ],
-                      ),
-                      //const SizedBox(height: 25),
+                      )
                     ],
                   ),
                 ),
@@ -206,17 +192,18 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  //signin function
   void signIn(String email, String password) async {
     if (_formKey.currentState!.validate()) {
       await _auth
           .signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => {
-        Fluttertoast.showToast(
-            msg: "Login Successful!", timeInSecForIosWeb: 5),
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const UserDashboard())),
-      })
+                Fluttertoast.showToast(
+                    msg: "Login Successful!", timeInSecForIosWeb: 5),
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (context) => const UserDashboard()),
+                )
+              })
           .catchError((e) {
         Fluttertoast.showToast(
             msg: "Wrong password/ Account does not exist!",
