@@ -28,8 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (value!.isEmpty) {
           return ("Please enter your email!");
         }
-        if (!RegExp("^[a-zA-Z0-9+_.-.-]+@[a-zA-Z0-9+_.-.-]+.[a-z]")
-            .hasMatch(value)) {
+        if (!RegExp("^[a-zA-Z0-9+_.-.-]+@[a-zA-Z0-9+_.-.-]+.[a-z]").hasMatch(value)) {
           return ("Please enter a valid email!");
         }
         return null;
@@ -83,8 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: const Text(
           "Login",
           textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -103,8 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
+              image: DecorationImage(image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
             ),
             child: SingleChildScrollView(
               child: Form(
@@ -119,8 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: <Widget>[
                       SizedBox(
                         height: 300,
-                        child:
-                            Image.asset("assets/logo.png", fit: BoxFit.contain),
+                        child: Image.asset("assets/logo.png", fit: BoxFit.contain),
                       ),
                       const SizedBox(height: 5),
                       SizedBox(width: 500, child: emailField),
@@ -137,8 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ResetPasswordScreen()),
+                                      builder: (context) => const ResetPasswordScreen()),
                                 );
                               },
                               child: const Text(
@@ -169,8 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => const SignUpScreen()),
+                                MaterialPageRoute(builder: (context) => const SignUpScreen()),
                               );
                             },
                             child: const Text(
@@ -196,20 +190,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void signIn(String email, String password) async {
     if (_formKey.currentState!.validate()) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const Center(child: CircularProgressIndicator());
+          });
       await _auth
           .signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => {
-                Fluttertoast.showToast(
-                    msg: "Login Successful!", timeInSecForIosWeb: 5),
+                Fluttertoast.showToast(msg: "Login Successful!", timeInSecForIosWeb: 5),
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (context) => const UserDashboard()),
+                  MaterialPageRoute(builder: (context) => const UserDashboard()),
                 )
               })
           .catchError((e) {
+        Navigator.of(context).pop();
         Fluttertoast.showToast(
-            msg: "Wrong password/ Account does not exist!",
-            timeInSecForIosWeb: 5);
+            msg: e!.message, timeInSecForIosWeb: 5);
       });
     }
   }

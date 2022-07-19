@@ -162,8 +162,13 @@ class _UserDashboardState extends State<UserDashboard> {
   }
 
   Future<void> signOut(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(child: CircularProgressIndicator());
+        });
     await FirebaseAuth.instance.signOut();
-    Fluttertoast.showToast(msg: "Signed out !");
+    Fluttertoast.showToast(msg: "Signed out successfully!");
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const LoginScreen()),

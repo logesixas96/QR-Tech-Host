@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:web_qr_system/screens/login.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
@@ -24,8 +25,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         if (value!.isEmpty) {
           return ("Please enter your email!");
         }
-        if (!RegExp("^[a-zA-Z0-9+_.-.-]+@[a-zA-Z0-9+_.-.-]+.[a-z]")
-            .hasMatch(value)) {
+        if (!RegExp("^[a-zA-Z0-9+_.-.-]+@[a-zA-Z0-9+_.-.-]+.[a-z]").hasMatch(value)) {
           return ("Please enter a valid email");
         }
         return null;
@@ -54,8 +54,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         child: const Text(
           "Reset Password",
           textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -80,8 +79,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
+              image: DecorationImage(image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
             ),
             child: SingleChildScrollView(
               child: Form(
@@ -118,14 +116,25 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   void resetPass(String email) {
     if (_formKey.currentState!.validate()) {
-      _auth.sendPasswordResetEmail(email: email);
-      {
-        Fluttertoast.showToast(
-            msg:
-                "You will receive an email if the account is registered with us!",
-            timeInSecForIosWeb: 5);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const Center(child: CircularProgressIndicator());
+          });
+      _auth
+          .sendPasswordResetEmail(email: email)
+          .then((value) => {
+                Fluttertoast.showToast(
+                    msg: "A link has been sent to your email!", timeInSecForIosWeb: 5),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                )
+              })
+          .catchError((e) {
         Navigator.of(context).pop();
-      }
+        Fluttertoast.showToast(msg: e!.message, timeInSecForIosWeb: 5);
+      });
     }
   }
 }

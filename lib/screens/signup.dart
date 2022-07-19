@@ -32,9 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       controller: firstNameEditingController,
       keyboardType: TextInputType.name,
       textCapitalization: TextCapitalization.words,
-      inputFormatters: [
-        FilteringTextInputFormatter(RegExp(r'[a-zA-Z ]'), allow: true)
-      ],
+      inputFormatters: [FilteringTextInputFormatter(RegExp(r'[a-zA-Z ]'), allow: true)],
       validator: (value) {
         RegExp regex = RegExp(r'^.{2,}$');
         if (value!.isEmpty) {
@@ -61,9 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       controller: lastNameEditingController,
       keyboardType: TextInputType.name,
       textCapitalization: TextCapitalization.words,
-      inputFormatters: [
-        FilteringTextInputFormatter(RegExp(r'[a-zA-Z ]'), allow: true)
-      ],
+      inputFormatters: [FilteringTextInputFormatter(RegExp(r'[a-zA-Z ]'), allow: true)],
       validator: (value) {
         if (value!.isEmpty) {
           return ("Last name cannot be empty!");
@@ -89,8 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (value!.isEmpty) {
           return ("Please enter your email!");
         }
-        if (!RegExp("^[a-zA-Z0-9+_.-.-]+@[a-zA-Z0-9+_.-.-]+.[a-z]")
-            .hasMatch(value)) {
+        if (!RegExp("^[a-zA-Z0-9+_.-.-]+@[a-zA-Z0-9+_.-.-]+.[a-z]").hasMatch(value)) {
           return ("Please enter a valid email!");
         }
         return null;
@@ -110,9 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       autofocus: false,
       controller: phoneNumEditingController,
       keyboardType: TextInputType.number,
-      inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.digitsOnly
-      ],
+      inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
       validator: (value) {
         if (value!.isEmpty) {
           return ("Please enter your phone number!");
@@ -163,8 +156,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       controller: confirmPasswordEditingController,
       obscureText: true,
       validator: (value) {
-        if (confirmPasswordEditingController.text !=
-            passwordEditingController.text) {
+        if (confirmPasswordEditingController.text != passwordEditingController.text) {
           return "Password does not match!";
         }
         return null;
@@ -193,8 +185,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: const Text(
           "Sign Up",
           textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -219,8 +210,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
+              image: DecorationImage(image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
             ),
             child: SingleChildScrollView(
               child: Form(
@@ -235,8 +225,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: <Widget>[
                       SizedBox(
                         height: 300,
-                        child:
-                            Image.asset("assets/logo.png", fit: BoxFit.contain),
+                        child: Image.asset("assets/logo.png", fit: BoxFit.contain),
                       ),
                       SizedBox(width: 500, child: firstNameField),
                       const SizedBox(height: 20),
@@ -264,10 +253,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void signUp(String email, String password) async {
     if (_formKey.currentState!.validate()) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const Center(child: CircularProgressIndicator());
+          });
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) => {postDetailsToFirestore()})
           .catchError((e) {
+        Navigator.of(context).pop();
         Fluttertoast.showToast(msg: e!.message);
       });
     }
@@ -282,15 +277,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     userModel.firstName = firstNameEditingController.text;
     userModel.lastName = lastNameEditingController.text;
     userModel.phoneNum = phoneNumEditingController.text;
-    await firebaseFirestore
-        .collection("users")
-        .doc(user.uid)
-        .set(userModel.toMap());
-    Fluttertoast.showToast(
-        msg: "Account created successfully!", timeInSecForIosWeb: 5);
-    Navigator.pushAndRemoveUntil(
-        (context),
-        MaterialPageRoute(builder: (context) => const UserDashboard()),
-        (route) => false);
+    await firebaseFirestore.collection("users").doc(user.uid).set(userModel.toMap());
+    Fluttertoast.showToast(msg: "Account created successfully!", timeInSecForIosWeb: 5);
+    Navigator.pushAndRemoveUntil((context),
+        MaterialPageRoute(builder: (context) => const UserDashboard()), (route) => false);
   }
 }

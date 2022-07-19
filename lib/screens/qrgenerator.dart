@@ -29,11 +29,7 @@ class _QRGenerateState extends State<QRGenerate> {
   @override
   void initState() {
     super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(user!.uid)
-        .get()
-        .then((value) {
+    FirebaseFirestore.instance.collection("users").doc(user!.uid).get().then((value) {
       loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
@@ -95,16 +91,13 @@ class _QRGenerateState extends State<QRGenerate> {
         padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          generateQR(
-              eventNameEditingController.text,
-              eventAddressEditingController.text,
+          generateQR(eventNameEditingController.text, eventAddressEditingController.text,
               eventDateTimeEditingController.text);
         },
         child: const Text(
           "Generate QR Code",
           textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -146,8 +139,7 @@ class _QRGenerateState extends State<QRGenerate> {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
+              image: DecorationImage(image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
             ),
             child: Center(
               child: SingleChildScrollView(
@@ -192,20 +184,22 @@ class _QRGenerateState extends State<QRGenerate> {
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(const Duration(days: 365)));
     if (date == null) return;
-    final time =
-        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    final time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
     if (time == null) return;
-    final newDateTime =
-        DateTime(date.year, date.month, date.day, time.hour, time.minute);
+    final newDateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
     setState(() => dateTime = newDateTime);
     setState(() {
-      eventDateTimeEditingController.text =
-          DateFormat('dd MMMM yyyy hh:mm a').format(dateTime);
+      eventDateTimeEditingController.text = DateFormat('dd MMMM yyyy hh:mm a').format(dateTime);
     });
   }
 
   void generateQR(String eventName, String eventAddress, String eventDate) {
     if (_formKey.currentState!.validate()) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const Center(child: CircularProgressIndicator());
+          });
       setState(() {
         qrData =
             "${loggedInUser.uid}:${eventNameEditingController.text}:${eventAddressEditingController.text}:${eventDateTimeEditingController.text}";
@@ -221,23 +215,19 @@ class _QRGenerateState extends State<QRGenerate> {
     eventCreateModel.eventAddress = eventAddressEditingController.text;
     eventCreateModel.eventDate = dateTime;
     eventCreateModel.qrData = qrData;
-    final eventsRef = firebaseFirestore
-        .collection("users")
-        .doc(user!.uid)
-        .collection("events")
-        .doc(qrData);
+    final eventsRef =
+        firebaseFirestore.collection("users").doc(user!.uid).collection("events").doc(qrData);
     eventsRef.get().then((docSnapshot) async => {
           if (docSnapshot.exists)
             {
+              Navigator.of(context).pop(),
               Fluttertoast.showToast(
-                  msg: "Error! You have already created this event!",
-                  timeInSecForIosWeb: 5)
+                  msg: "Error! You have already created this event!", timeInSecForIosWeb: 5)
             }
           else
             {
               await eventsRef.set(eventCreateModel.toMap()),
-              Fluttertoast.showToast(
-                  msg: "QR successfully generated!", timeInSecForIosWeb: 5),
+              Fluttertoast.showToast(msg: "QR successfully generated!", timeInSecForIosWeb: 5),
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const QRHistory()),
