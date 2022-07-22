@@ -53,8 +53,7 @@ class _QRHistoryState extends State<QRHistory> {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
+              image: DecorationImage(image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
             ),
             child: StreamBuilder<QuerySnapshot>(
               stream: firebaseFirestore
@@ -68,8 +67,7 @@ class _QRHistoryState extends State<QRHistory> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 return Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      0, 55, 0, MediaQuery.of(context).size.height / 30),
+                  padding: EdgeInsets.fromLTRB(0, 55, 0, MediaQuery.of(context).size.height / 30),
                   child: ListView.builder(
                     physics: const BouncingScrollPhysics(),
                     itemCount: snapshot.data.docs.length,
@@ -77,8 +75,7 @@ class _QRHistoryState extends State<QRHistory> {
                       DocumentSnapshot event = snapshot.data.docs[index];
                       return Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: MediaQuery.of(context).size.width / 30,
-                            vertical: 10),
+                            horizontal: MediaQuery.of(context).size.width / 30, vertical: 10),
                         child: Center(
                           child: Container(
                             width: 800,
@@ -99,34 +96,26 @@ class _QRHistoryState extends State<QRHistory> {
                                           color: index.isEven
                                               ? Colors.red.shade900
                                               : Colors.red.shade300),
-                                      title: Text(event['eventName'] +
-                                          "@" +
-                                          event['eventAddress']),
-                                      trailing: Icon(
-                                          Icons.double_arrow_outlined,
+                                      title: Text(event['eventName'] + "@" + event['eventAddress']),
+                                      trailing: Icon(Icons.double_arrow_outlined,
                                           color: index.isEven
                                               ? Colors.red.shade900
                                               : Colors.red.shade300),
                                       subtitle: Text(
                                         timeStamp.format(
                                           DateTime.fromMillisecondsSinceEpoch(
-                                              (event['eventDate'])
-                                                  .millisecondsSinceEpoch),
+                                              (event['eventDate']).millisecondsSinceEpoch),
                                         ),
                                       ),
                                       onTap: () {
-                                        qrDataTextController.text =
-                                            event['qrData'];
-                                        eventNameTextController.text =
-                                            event['eventName'];
+                                        qrDataTextController.text = event['qrData'];
+                                        eventNameTextController.text = event['eventName'];
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) =>
-                                                AttendanceList(
-                                                    qrDataTextController.text,
-                                                    eventNameTextController
-                                                        .text),
+                                            builder: (context) => AttendanceList(
+                                                qrDataTextController.text,
+                                                eventNameTextController.text),
                                           ),
                                         );
                                       }),
@@ -143,44 +132,32 @@ class _QRHistoryState extends State<QRHistory> {
                                                   content: SizedBox(
                                                     width: 300,
                                                     child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                       children: <Widget>[
                                                         Align(
-                                                          alignment: Alignment
-                                                              .topRight,
+                                                          alignment: Alignment.topRight,
                                                           child: IconButton(
                                                             onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
+                                                              Navigator.pop(context);
                                                             },
-                                                            icon: const Icon(
-                                                                Icons.close,
-                                                                color: Colors
-                                                                    .grey),
+                                                            icon: const Icon(Icons.close,
+                                                                color: Colors.grey),
                                                           ),
                                                         ),
                                                         RepaintBoundary(
                                                           key: globalKey,
                                                           child: QrImage(
-                                                              version:
-                                                                  QrVersions
-                                                                      .auto,
-                                                              data: event[
-                                                                  'qrData'],
+                                                              version: QrVersions.auto,
+                                                              data: event['qrData'],
                                                               size: 200,
-                                                              backgroundColor:
-                                                                  Colors.white),
+                                                              backgroundColor: Colors.white),
                                                         ),
                                                         TextButton.icon(
                                                           onPressed: () {
                                                             downloadQR();
                                                           },
-                                                          icon: const Icon(
-                                                              Icons.download),
-                                                          label: const Text(
-                                                              "Download QR"),
+                                                          icon: const Icon(Icons.download),
+                                                          label: const Text("Download QR"),
                                                         )
                                                       ],
                                                     ),
@@ -190,8 +167,7 @@ class _QRHistoryState extends State<QRHistory> {
                                             ),
                                           );
                                         },
-                                        icon: const Icon(Icons.qr_code_2,
-                                            color: Colors.grey),
+                                        icon: const Icon(Icons.qr_code_2, color: Colors.grey),
                                         label: const Text(
                                           "Show QR Code",
                                           style: TextStyle(color: Colors.grey),
@@ -204,59 +180,41 @@ class _QRHistoryState extends State<QRHistory> {
                                             builder: (context) => Center(
                                               child: SingleChildScrollView(
                                                 child: AlertDialog(
-                                                  title: const Text(
-                                                      "Confirm Delete?"),
+                                                  title: const Text("Confirm Delete?"),
                                                   content: Text(
                                                       "${"You are deleting '" + event['eventName']}' & all of the information related to the event!"),
                                                   actions: <Widget>[
                                                     TextButton(
                                                       onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
+                                                        Navigator.of(context).pop();
                                                       },
-                                                      child:
-                                                          const Text("Cancel"),
+                                                      child: const Text("Cancel"),
                                                     ),
                                                     TextButton(
                                                       onPressed: () async {
-                                                        var collection =
-                                                            firebaseFirestore
-                                                                .collection(
-                                                                    "users")
-                                                                .doc(user!.uid)
-                                                                .collection(
-                                                                    "events")
-                                                                .doc(event[
-                                                                    'qrData'])
-                                                                .collection(
-                                                                    "attendance");
-                                                        var snapshots =
-                                                            await collection
-                                                                .get();
-                                                        for (var doc
-                                                            in snapshots.docs) {
-                                                          await doc.reference
-                                                              .delete();
+                                                        var collection = firebaseFirestore
+                                                            .collection("users")
+                                                            .doc(user!.uid)
+                                                            .collection("events")
+                                                            .doc(event['qrData'])
+                                                            .collection("attendance");
+                                                        var snapshots = await collection.get();
+                                                        for (var doc in snapshots.docs) {
+                                                          await doc.reference.delete();
                                                         }
                                                         firebaseFirestore
                                                             .collection("users")
                                                             .doc(user!.uid)
-                                                            .collection(
-                                                                "events")
-                                                            .doc(
-                                                                event['qrData'])
+                                                            .collection("events")
+                                                            .doc(event['qrData'])
                                                             .delete();
                                                         Fluttertoast.showToast(
-                                                            msg:
-                                                                "Event successfully deleted!",
-                                                            timeInSecForIosWeb:
-                                                                5);
+                                                            msg: "Event successfully deleted!",
+                                                            timeInSecForIosWeb: 5);
                                                         if (!mounted) return;
-                                                        Navigator.of(context)
-                                                            .pop();
+                                                        Navigator.of(context).pop();
                                                       },
-                                                      child:
-                                                          const Text("Confirm"),
+                                                      child: const Text("Confirm"),
                                                     )
                                                   ],
                                                 ),
@@ -290,12 +248,10 @@ class _QRHistoryState extends State<QRHistory> {
     RenderRepaintBoundary? boundary =
         globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
     ui.Image? image = await boundary?.toImage(pixelRatio: 3.0);
-    ByteData? byteData =
-        await image?.toByteData(format: ui.ImageByteFormat.png);
+    ByteData? byteData = await image?.toByteData(format: ui.ImageByteFormat.png);
     Uint8List? pngBytes = byteData?.buffer.asUint8List();
     final base64data = base64Encode(pngBytes!);
-    final html.AnchorElement a =
-        html.AnchorElement(href: 'data:image/png;base64,$base64data');
+    final html.AnchorElement a = html.AnchorElement(href: 'data:image/png;base64,$base64data');
     a.download = 'QR.png';
     a.click();
     a.remove();

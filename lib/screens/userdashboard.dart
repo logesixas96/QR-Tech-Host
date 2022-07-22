@@ -21,11 +21,7 @@ class _UserDashboardState extends State<UserDashboard> {
   @override
   void initState() {
     super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(user!.uid)
-        .get()
-        .then((value) {
+    FirebaseFirestore.instance.collection("users").doc(user!.uid).get().then((value) {
       loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
@@ -40,7 +36,7 @@ class _UserDashboardState extends State<UserDashboard> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 1,
-        title: Text("Welcome ${loggedInUser.firstName} !"),
+        title: Text("Welcome, ${loggedInUser.firstName} !"),
         centerTitle: true,
         actions: <Widget>[
           Padding(
@@ -49,8 +45,7 @@ class _UserDashboardState extends State<UserDashboard> {
               onTap: () {
                 signOut(context);
               },
-              child:
-                  const Icon(Icons.logout, size: 26, color: Colors.redAccent),
+              child: const Icon(Icons.logout, size: 26, color: Colors.redAccent),
             ),
           )
         ],
@@ -61,8 +56,7 @@ class _UserDashboardState extends State<UserDashboard> {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
+              image: DecorationImage(image: AssetImage("assets/bg.png"), fit: BoxFit.fill),
             ),
             child: SingleChildScrollView(
               child: Padding(
@@ -80,30 +74,23 @@ class _UserDashboardState extends State<UserDashboard> {
                     const SizedBox(height: 10),
                     const Text(
                       "My Profile",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
                     Text(
                       "${loggedInUser.firstName} ${loggedInUser.lastName}",
                       style: const TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20),
+                          color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 20),
                     ),
                     Text(
                       "${loggedInUser.email}",
                       style: const TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20),
+                          color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 20),
                     ),
                     Text(
                       "${loggedInUser.phoneNum}",
                       style: const TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20),
+                          color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 20),
                     ),
                     const SizedBox(height: 40),
                     SizedBox(
@@ -112,8 +99,7 @@ class _UserDashboardState extends State<UserDashboard> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => const QRGenerate()),
+                            MaterialPageRoute(builder: (context) => const QRGenerate()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -135,8 +121,7 @@ class _UserDashboardState extends State<UserDashboard> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => const QRHistory()),
+                            MaterialPageRoute(builder: (context) => const QRHistory()),
                           );
                         },
                         style: ElevatedButton.styleFrom(

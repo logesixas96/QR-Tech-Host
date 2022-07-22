@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:web_qr_system/screens/userdashboard.dart';
 import 'package:web_qr_system/screens/signup.dart';
 import 'package:web_qr_system/screens/resetpassword.dart';
+import 'package:web_qr_system/screens/verifyemail.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -17,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           elevation: 1,
-          title: const Text("Welcome to QR Host Panel"),
+          title: const Text("Welcome to QR Host Panel !"),
           centerTitle: true),
       body: Center(
         child: SingleChildScrollView(
@@ -200,13 +201,12 @@ class _LoginScreenState extends State<LoginScreen> {
           .then((uid) => {
                 Fluttertoast.showToast(msg: "Login Successful!", timeInSecForIosWeb: 5),
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const UserDashboard()),
-                )
+                  MaterialPageRoute(builder: (context) => const VerifyEmail()),
+                ),
               })
           .catchError((e) {
         Navigator.of(context).pop();
-        Fluttertoast.showToast(
-            msg: e!.message, timeInSecForIosWeb: 5);
+        Fluttertoast.showToast(msg: e!.message, timeInSecForIosWeb: 5);
       });
     }
   }

@@ -70,8 +70,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               Navigator.of(context).pop();
             },
           ),
-          title: const Text(
-              "Forgot your password? Enter your email & a link will be sent to you for password reset."),
+          title: const Text("Reset Account Password"),
           centerTitle: true),
       body: Center(
         child: SingleChildScrollView(
@@ -125,7 +124,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           .sendPasswordResetEmail(email: email)
           .then((value) => {
                 Fluttertoast.showToast(
-                    msg: "A link has been sent to your email!", timeInSecForIosWeb: 5),
+                    msg: "Password reset link has been sent to your email!", timeInSecForIosWeb: 5),
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const LoginScreen()),

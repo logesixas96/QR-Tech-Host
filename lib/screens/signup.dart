@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:web_qr_system/model/usermodel.dart';
-import 'package:web_qr_system/screens/userdashboard.dart';
+import 'package:web_qr_system/screens/login.dart';
 import 'package:intl/intl.dart';
+import 'package:web_qr_system/screens/verifyemail.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -202,7 +203,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Navigator.of(context).pop();
             },
           ),
-          title: const Text("Sign up for an account now"),
+          title: const Text("Create An Account"),
           centerTitle: true),
       body: Center(
         child: SingleChildScrollView(
@@ -260,7 +261,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           });
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => {postDetailsToFirestore()})
+          .then((value) => {
+                postDetailsToFirestore(),
+                //sendVerificationEmail(),
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const VerifyEmail()),
+                ),
+              })
           .catchError((e) {
         Navigator.of(context).pop();
         Fluttertoast.showToast(msg: e!.message);
@@ -278,8 +285,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     userModel.lastName = lastNameEditingController.text;
     userModel.phoneNum = phoneNumEditingController.text;
     await firebaseFirestore.collection("users").doc(user.uid).set(userModel.toMap());
-    Fluttertoast.showToast(msg: "Account created successfully!", timeInSecForIosWeb: 5);
-    Navigator.pushAndRemoveUntil((context),
-        MaterialPageRoute(builder: (context) => const UserDashboard()), (route) => false);
+  }
+
+  void sendVerificationEmail() async {
+    User? user = _auth.currentUser;
+    await user!.sendEmailVerification();
+    Fluttertoast.showToast(
+        msg: "Email verification link has sent to your email!", timeInSecForIosWeb: 5);
+    Navigator.pushAndRemoveUntil(
+        (context), MaterialPageRoute(builder: (context) => const LoginScreen()), (route) => false);
   }
 }
