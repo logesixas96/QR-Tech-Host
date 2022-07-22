@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:web_qr_system/model/usermodel.dart';
-import 'package:web_qr_system/screens/login.dart';
 import 'package:intl/intl.dart';
 import 'package:web_qr_system/screens/verifyemail.dart';
 
@@ -263,7 +262,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) => {
                 postDetailsToFirestore(),
-                //sendVerificationEmail(),
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => const VerifyEmail()),
                 ),
@@ -285,14 +283,5 @@ class _SignUpScreenState extends State<SignUpScreen> {
     userModel.lastName = lastNameEditingController.text;
     userModel.phoneNum = phoneNumEditingController.text;
     await firebaseFirestore.collection("users").doc(user.uid).set(userModel.toMap());
-  }
-
-  void sendVerificationEmail() async {
-    User? user = _auth.currentUser;
-    await user!.sendEmailVerification();
-    Fluttertoast.showToast(
-        msg: "Email verification link has sent to your email!", timeInSecForIosWeb: 5);
-    Navigator.pushAndRemoveUntil(
-        (context), MaterialPageRoute(builder: (context) => const LoginScreen()), (route) => false);
   }
 }
