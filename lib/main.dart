@@ -15,7 +15,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'QR Host Panel',
-        theme: ThemeData(primarySwatch: Colors.red),
+        theme: ThemeData(
+            primarySwatch: Colors.red,
+            fontFamily: 'Rokkitt',
+            textTheme: Theme.of(context)
+                .textTheme
+                .apply(fontSizeFactor: 1.1, fontSizeDelta: 2.0, fontFamily: 'Rokkitt')),
         home: const LoginScreen());
   }
 }

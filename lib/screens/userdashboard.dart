@@ -71,30 +71,30 @@ class _UserDashboardState extends State<UserDashboard> {
                       height: 300,
                       child: Image.asset("assets/logo.png", fit: BoxFit.fill),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     const Text(
                       "My Profile",
-                      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
                     Text(
                       "${loggedInUser.firstName} ${loggedInUser.lastName}",
                       style: const TextStyle(
-                          color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 20),
+                          color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 25),
                     ),
                     Text(
                       "${loggedInUser.email}",
                       style: const TextStyle(
-                          color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 20),
+                          color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 25),
                     ),
                     Text(
                       "${loggedInUser.phoneNum}",
                       style: const TextStyle(
-                          color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 20),
+                          color: Colors.black54, fontWeight: FontWeight.w500, fontSize: 25),
                     ),
                     const SizedBox(height: 40),
                     SizedBox(
-                      width: 200,
+                      width: 250,
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -109,6 +109,7 @@ class _UserDashboardState extends State<UserDashboard> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const <Widget>[
                             Icon(Icons.qr_code_2, size: 50),
+                            SizedBox(width: 10),
                             Text('Generate New QR')
                           ],
                         ),
@@ -116,7 +117,7 @@ class _UserDashboardState extends State<UserDashboard> {
                     ),
                     const SizedBox(height: 15),
                     SizedBox(
-                      width: 200,
+                      width: 250,
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -131,6 +132,7 @@ class _UserDashboardState extends State<UserDashboard> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const <Widget>[
                             Icon(Icons.history, size: 50),
+                            SizedBox(width: 10),
                             Text('View Attendance')
                           ],
                         ),
