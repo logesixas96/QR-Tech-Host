@@ -12,7 +12,7 @@ At the current state of the application, this part of the application can only b
 
 ## About this application
 
-This application is to be used in combination with the client-side application **[Android-QR-System](https://github.com/logesixas96/Android-QR-System)**.  
+This application is to be used in combination with the client-side application **[QR-Tech-Client](https://github.com/logesixas96/QR-Tech-Client)**.  
 
 The goal of this application is to allow an user to create an event inputting data such as time, date, and location to generate a unique qr-code that attendees, of the said event, can log their attendance.
 
