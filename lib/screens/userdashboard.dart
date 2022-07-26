@@ -155,7 +155,7 @@ class _UserDashboardState extends State<UserDashboard> {
           return const Center(child: CircularProgressIndicator());
         });
     await FirebaseAuth.instance.signOut();
-    Fluttertoast.showToast(msg: "Signed out successfully!");
+    Fluttertoast.showToast(msg: "Signed out successfully!", timeInSecForIosWeb: 5);
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const LoginScreen()),

@@ -268,7 +268,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               })
           .catchError((e) {
         Navigator.of(context).pop();
-        Fluttertoast.showToast(msg: e!.message);
+        Fluttertoast.showToast(msg: e!.message, timeInSecForIosWeb: 5);
       });
     }
   }

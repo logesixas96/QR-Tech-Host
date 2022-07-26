@@ -143,6 +143,7 @@ class _QRGenerateState extends State<QRGenerate> {
             ),
             child: Center(
               child: SingleChildScrollView(
+                primary: false,
                 child: Form(
                   key: _formKey,
                   child: Padding(
