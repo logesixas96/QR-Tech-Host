@@ -182,7 +182,7 @@ class _QRHistoryState extends State<QRHistory> {
                                                 child: AlertDialog(
                                                   title: const Text("Confirm Delete?"),
                                                   content: Text(
-                                                      "${"You are deleting '" + event['eventName']}' & all of the information related to the event!"),
+                                                      "You are deleting '${event['eventName']}' & all of the information related to the event!"),
                                                   actions: <Widget>[
                                                     TextButton(
                                                       onPressed: () {
