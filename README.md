@@ -32,12 +32,6 @@ sudo apt-get install clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
 sudo snap install flutter --classic
 flutter channel stable  # run this and below command if flutter was installed previously
 flutter upgrade
-
-# Pull code from repo and test/build
-git clone https://github.com/logesixas96/QR-Tech-Host
-cd QR-Tech-Host/
-flutter run -d chrome  # run this for testing in debug mode
-flutter build web
 ```
 
 #### Windows
@@ -51,15 +45,18 @@ git clone https://github.com/flutter/flutter.git -b stable
 
 If you wish to use flutter in the console, follow the steps [here](https://docs.flutter.dev/get-started/install/windows#update-your-path). We can now begin  cloning the repository and building the application.  
 
-```powershell
+### Cloning and building
+
+```bash
+# Pull code from repo and test/build
 git clone https://github.com/logesixas96/QR-Tech-Host
 cd QR-Tech-Host/
-flutter run -d chrome  # run this for testing in debug mode
+# flutter run -d chrome   # run this for testing in debug mode
 flutter build web
 ```
 
 ---
 
-**Important Note**: This program is licenced under GNU GPLv2
+**Important Note**: This program is licensed under GNU GPLv2
 
-**side note**: This application was created as a project during our ([logesixas96](https://github.com/logesixas96) and [kshorenicholas](https://github.com/kshorenicholas)) internship. Future maintanence of these two repositories are yet to be decided.
+**side note**: This application was created as a project during our ([logesixas96](https://github.com/logesixas96) and [kshorenicholas](https://github.com/kshorenicholas)) internship. Future maintenance of these two repositories are yet to be decided.
